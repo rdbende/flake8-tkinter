@@ -4,4 +4,5 @@ Not a plugin yet, but some ideas on the possible future flake8 plugin for tkinte
 - Forbid asterisk import: `from tkinter import *`
 - Prefer to use `widget.config(property=value)` instead of `widget["property"] = value`
 - Prefer to use constants from tkinter instead of text values: `button.config(state=tk.DISABLED)` instead of `button.config(state="disabled")`
+- Warn if result of `.pack()`/`.grid()`/`.place()` call is stored in a variable
 - ...
