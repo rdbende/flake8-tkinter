@@ -17,3 +17,4 @@
 
 - Suggest using `widget.after` instead of `time.sleep`
 - Suggest keeping reference of local `PhotoImage` instance, to avoid GC
+- Warn when using `root.update`, as [Update is considered harmful](https://wiki.tcl-lang.org/page/Update+considered+harmful)
