@@ -11,8 +11,8 @@ TK001 = "TK001 'from tkinter import *' used; consider using 'import tkinter as t
 TK002 = "TK002 'from tkinter.ttk import *' used; consider using 'from tkinter import ttk'"
 # place for more * import warnings
 TK010 = "TK010 'import tkinter.ttk as ttk' used; could be simplified to 'from tkinter import ttk'"
-TK020 = "TK020 Inline call to '{func}' for 'command' argument in {widget}. Perhaps you meant 'command={func}' (without the parentheses)?"
-TK030 = "TK030 time.sleep used; use tkinter.widget.after instead"
+TK020 = "TK020 Inline call to '{func}' for 'command' argument at '{widget}'. Perhaps you meant 'command={func}' (without the parentheses)?"
+TK030 = "TK030 'time.sleep({seconds})' used, since it blocks the thread and the GUI will freeze. Use the '.after(milliseconds)' method instead, which isavailable on every Tkinter widget"
 TK040 = "TK040 tkinter.{name} used; use an appropriate built-in boolean instead"
 
 
@@ -43,7 +43,9 @@ class ProblemParser:
             and data_dict.get("tkinter_used", False)  # don't warn if tkinter isn't imported
         ):
 
-            problems_list.append((node.lineno, node.col_offset, TK030))
+            problems_list.append(
+                (node.lineno, node.col_offset, TK030.format(seconds=node.args[0].value))
+            )
 
     @staticmethod
     def process_command_handler_call(

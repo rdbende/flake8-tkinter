@@ -9,8 +9,8 @@ Flake8 plugin for Tkinter projects
 | TK001 | `from tkinter import *` used; consider using `import tkinter as tk` or simply `import tkinter` |
 | TK002 | `from tkinter.ttk import *` used; consider using `from tkinter import ttk` |
 | TK010 | `import tkinter.ttk as ttk` used; could be simplified to `from tkinter import ttk` |
-| TK020 | Inline call to `funckname` for 'command' argument in `widget`. Perhaps you meant `command=funcname` (without the parentheses)? |
-| TK030 | `time.sleep` used; use `tkinter.widget.after` instead |
+| TK020 | Inline call to `funcname` for 'command' argument at `widget`. Perhaps you meant `command=funcname` (without the parentheses)? |
+| TK030 | `time.sleep(seconds)` used, since it blocks the thread and the GUI will freeze. Use the `.after(milliseconds)` method instead, which isavailable on every Tkinter widget |
 | TK040 | `tkinter.DUMB_CONSTANT` used; use an appropriate built-in boolean instead |
 
 
