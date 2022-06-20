@@ -24,4 +24,4 @@
 
   - [ ] Strict variant: always warn if a parent is not specified.
 
-- [ ] Using `.bind("<1>", handler)` with a button instead of a `command` parameter (causes "suck" button effect)
+- [ ] Using `.bind("<1>", handler)` with a button instead of the `command` parameter (causes "stuck" button effect)
