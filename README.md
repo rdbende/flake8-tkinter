@@ -13,5 +13,5 @@ Not a plugin yet, but some ideas on the possible future flake8 plugin for tkinte
 - Infinite loop in a handler (not sure yet how to identify an infinite loop) - propose to use `root.after`
 - `PhotoImage` object stored only in a local variable (will be removed by the garbage collector)
 - A widget is created without a parent container specified, and there is a container in the same scope (`tk.Toplevel` or `tk.Frame`), or the widget is created in a method a subclass of `tk.Tk`, `tk.Toplevel` or `tk.Frame`.
-  - Strict variant: always warn in a parent is not specified.
+  - Strict variant: always warn if a parent is not specified.
 - ...
