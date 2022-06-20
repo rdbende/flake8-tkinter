@@ -1,17 +1,10 @@
 # flake8-tkinter
-Not a plugin yet, but some ideas on the possible future flake8 plugin for tkinter projects
 
-- Prefer to use `import tkinter` or `import tkinter as tk` instead of asterisk import: `from tkinter import *`
-- Prefer to use `widget.config(property=value)` instead of `widget["property"] = value`
-- Prefer to use constants from tkinter instead of text values: `button.config(state=tk.DISABLED)` instead of `button.config(state="disabled")`
-- Warn if result of `.pack()`/`.grid()`/`.place()` call (`None`) is stored in a variable
-- More then one `Tk` object: child windows must be created from `Toplevel` class
-- More then one `mainloop` call
-- Possible problem: a function called, it's result is passed as an event handler or a command handler:  
-  `tk.Button(text="Button", command=handler())` or `label.bind("<1>", handler())`
-- Using of `time.sleep` - propose to use `root.after` instead
-- Infinite loop in a handler (not sure yet how to identify an infinite loop) - propose to use `root.after`
-- `PhotoImage` object stored only in a local variable (will be removed by the garbage collector)
-- A widget is created without a parent container specified, and there is a container in the same scope (`tk.Toplevel` or `tk.Frame`), or the widget is created in a method a subclass of `tk.Tk`, `tk.Toplevel` or `tk.Frame`.
-  - Strict variant: always warn if a parent is not specified.
-- ...
+Flake8 plugin for Tkinter projects 
+
+
+## Development
+
+1. Set up a virtual environment, activate, and install `flake8` in it
+2. Run `pip install -e .` to install flake8-tkinter in an editable format
+3. Create a test code, and run `flake8` on it!
