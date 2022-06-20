@@ -18,3 +18,8 @@
 - Suggest using `widget.after` instead of `time.sleep`
 - Suggest keeping reference of local `PhotoImage` instance, to avoid GC
 - Warn when using `root.update`, as [Update is considered harmful](https://wiki.tcl-lang.org/page/Update+considered+harmful)
+- Infinite loop in a handler (not sure yet how to identify an infinite loop) - propose to use root.after
+- A widget is created without a parent container specified, and there is a container in the same scope (`tk.Toplevel` or `tk.Frame`), or the widget is created in a method a subclass of `tk.Tk`, `tk.Toplevel` or `tk.Frame`.
+
+  - Strict variant: always warn if a parent is not specified.
+
