@@ -4,7 +4,7 @@ import ast
 from dataclasses import dataclass
 from typing import Generator
 
-__version__ = "0.0.1"
+__version__ = "0.1.2"
 
 
 TK001 = "TK001 'from tkinter import *' used; consider using 'import tkinter as tk' or simply 'import tkinter'"
