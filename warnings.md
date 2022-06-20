@@ -5,6 +5,7 @@
 - [x] Suggest using `widget.after(ms)` instead of `time.sleep(s)` (**TK030**)
 - [ ] Suggest keeping reference of local `PhotoImage` instance, to avoid GC
 - [ ] Warn when using `root.update`, as [Update is considered harmful](https://wiki.tcl-lang.org/page/Update+considered+harmful)
+- [ ] Warn when using a float as `Text` widget index
 - [ ] Infinite loop in a handler - propose to use `widget.after` (**TK031**)
 - [ ] Event and callback handlers
   - [x] Warn when calling the function inline, instead of just referencing it (**TK020**)
