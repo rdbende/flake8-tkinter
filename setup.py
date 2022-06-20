@@ -1,9 +1,6 @@
 from setuptools import setup
 import subprocess
-
-
-version = subprocess.check_output(["git", "describe", "--abbrev=0", "--tags"]).strip().decode()
-version = version.replace("v", "")
+from flake8_tkinter import __version__
 
 
 with open("README.md", "r") as file:
@@ -15,7 +12,7 @@ flake8_entry_point = "TK = flake8_tkinter:Plugin"
 
 setup(
     name="flake8_tkinter",
-    version=version,
+    version=__version__,
     description="Flake8 plugin for Tkinter projects",
     author="rdbende",
     author_email="rdbende@gmail.com",
