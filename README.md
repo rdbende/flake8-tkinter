@@ -2,16 +2,81 @@
 
 Flake8 plugin for Tkinter projects
 
+## List of warnings
+### TK001
 
-## Error codes
-| Error code | Description |
-|:-:|:-:|
-| TK001 | `from tkinter import *` used; consider using `import tkinter as tk` or simply `import tkinter` |
-| TK002 | `from tkinter.ttk import *` used; consider using `from tkinter import ttk` |
-| TK010 | `import tkinter.ttk as ttk` used; could be simplified to `from tkinter import ttk` |
-| TK020 | Inline call to `funcname` for 'command' argument at `widget`. Perhaps you meant `command=funcname` (without the parentheses)? |
-| TK030 | `time.sleep(seconds)` used, since it blocks the thread and the GUI will freeze. Use the `.after(milliseconds)` method instead, which isavailable on every Tkinter widget |
-| TK040 | `tkinter.DUMB_CONSTANT` used; use an appropriate built-in boolean instead |
+Don't use `from tkinter import *`
+
+**Incorrect:**
+
+```diff
+- from tkinter import *
++ import tkinter
+# OR
++ import tkinter as tk
+```
+
+### TK002
+
+Don't use `from tkinter.ttk import *`
+
+```diff
+- from tkinter.ttk import *
++ from tkinter import ttk
+```
+
+### TK010
+
+Doing `import tkinter.ttk as ttk` has no point
+
+```diff
+- import tkinter.ttk as ttk
++ from tkinter import ttk
+```
+
+### TK020
+
+Calling a function instead of referencing it for `command` argument at some widgets
+
+```diff
+- ttk.Button(..., command=handler())
++ ttk.Button(..., command=handler)
+```
+
+
+### TK030
+
+Don't use `time.sleep` in Tkinter code
+
+```diff
+- import time
+- time.sleep(2)
++ tkinter.Tk().after(2000)
+```
+
+### TK040
+
+Don't use dumb tkinter constants, use booleans instead
+
+```diff
+- w.pack(expand=tk.TRUE)
++ w.pack(expand=True)
+
+- w.pack(expand=tk.FALSE)
++ w.pack(expand=False)
+
+- w.pack(expand=tk.YES)
++ w.pack(expand=True)
+
+- w.pack(expand=tk.NO)
++ w.pack(expand=False)
+
+- w.pack(expand=tk.ON)
++ w.pack(expand=True)
+
+- w.pack(expand=tk.OFF)
++ w.pack(expand=False)
+```
 
 
 ## Development
