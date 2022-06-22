@@ -7,8 +7,6 @@ Flake8 plugin for Tkinter projects
 
 Don't use `from tkinter import *`
 
-**Incorrect:**
-
 ```diff
 - from tkinter import *
 + import tkinter
