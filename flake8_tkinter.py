@@ -11,8 +11,14 @@ TK001 = "TK001 'from tkinter import *' used; consider using 'import tkinter as t
 TK002 = "TK002 'from tkinter.ttk import *' used; consider using 'from tkinter import ttk'"
 # place for more * import warnings
 TK010 = "TK010 'import tkinter.ttk as ttk' used; could be simplified to 'from tkinter import ttk'"
-TK020 = "TK020 Inline call to '{func}' for 'command' argument at '{widget}'. Perhaps you meant 'command={func}' (without the parentheses)?"
-TK030 = "TK030 'time.sleep({seconds})' used, since it blocks the thread and the GUI will freeze. Use the '.after(milliseconds)' method instead, which is available on every Tkinter widget"
+TK020 = (
+    "TK020 Inline call to '{func}' for 'command' argument at '{widget}'. "
+    "Perhaps you meant 'command={func}' (without the parentheses)?"
+)
+TK030 = (
+    "TK030 'time.sleep({seconds})' used, since it blocks the thread and the GUI will freeze. "
+    "Use the '.after(milliseconds)' method instead, which is available on every Tkinter widget"
+)
 TK040 = "TK040 tkinter.{name} used; use an appropriate built-in boolean instead"
 
 
@@ -141,21 +147,26 @@ class Visitor(ast.NodeVisitor):
 
         self.generic_visit(node)
 
-    def visit_FunctionDef(self, node: ast.Import) -> None:
+    def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
         if node.name == "sleep":
             data_dict["sleep_from_time"] = False
 
         self.generic_visit(node)
 
-    def visit_Attribute(self, node: ast.Import) -> None:
-        if node.value.id == data_dict.get("tkinter_imported_as") and node.attr in {
-            "TRUE",
-            "FALSE",
-            "YES",
-            "NO",
-            "ON",
-            "OFF",
-        }:
+    def visit_Attribute(self, node: ast.Attribute) -> None:
+        if (
+            isinstance(node.value, ast.Name)
+            and node.value.id == data_dict.get("tkinter_imported_as")
+            and node.attr
+            in {
+                "TRUE",
+                "FALSE",
+                "YES",
+                "NO",
+                "ON",
+                "OFF",
+            }
+        ):
             self.problems.append((node.lineno, node.col_offset, TK040.format(name=node.attr)))
 
         self.generic_visit(node)
