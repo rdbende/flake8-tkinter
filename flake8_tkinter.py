@@ -141,21 +141,26 @@ class Visitor(ast.NodeVisitor):
 
         self.generic_visit(node)
 
-    def visit_FunctionDef(self, node: ast.Import) -> None:
+    def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
         if node.name == "sleep":
             data_dict["sleep_from_time"] = False
 
         self.generic_visit(node)
 
-    def visit_Attribute(self, node: ast.Import) -> None:
-        if node.value.id == data_dict.get("tkinter_imported_as") and node.attr in {
-            "TRUE",
-            "FALSE",
-            "YES",
-            "NO",
-            "ON",
-            "OFF",
-        }:
+    def visit_Attribute(self, node: ast.Attribute) -> None:
+        if (
+            isinstance(node.value, ast.Name)
+            and node.value.id == data_dict.get("tkinter_imported_as")
+            and node.attr
+            in {
+                "TRUE",
+                "FALSE",
+                "YES",
+                "NO",
+                "ON",
+                "OFF",
+            }
+        ):
             self.problems.append((node.lineno, node.col_offset, TK040.format(name=node.attr)))
 
         self.generic_visit(node)
