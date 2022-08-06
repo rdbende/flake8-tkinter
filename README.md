@@ -102,6 +102,7 @@ Don't use dumb tkinter constants, use booleans instead
   - [ ] Suggest using `tk.NSEW` instead of `tk.N+tk.S+tk.E+tk.W`, and other combinations (**TK041**)
   - [ ] A widget is created without a parent container specified, and there is a container in the same scope (`tk.Toplevel` or `tk.Frame`), or the widget is created in a method a subclass of `tk.Tk`, `tk.Toplevel` or `tk.Frame`
   - [ ] Warn when a huge app isn't OO (?)
+  - [ ] Warn when not using `add=True` in bindings
 
 - Opinionated suggestions
   - [ ] Suggest changing things like `root.wm_title()` to `root.title()` (tho I use `wm_` quite often)
@@ -109,6 +110,7 @@ Don't use dumb tkinter constants, use booleans instead
   - [ ] Suggest using more clear binding sequences, like `<Button-1>` instead of `<1>` and `<Key-a>` instead of `<a>`
   - [ ] Warn if a parent is not specified (?)
   - [ ] Suggest changing tkinter constants to string literals (this option should be disabled by default) (**TK042**)
+  - [ ] Warn when using `add="+"` in bindings, use a boolean instead
 
 ## Development
 
