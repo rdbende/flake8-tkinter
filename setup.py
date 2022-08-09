@@ -12,7 +12,7 @@ flake8_entry_point = "TK = flake8_tkinter:Plugin"
 setup(
     name="flake8_tkinter",
     version=__version__,
-    description="Flake8 plugin for Tkinter projects",
+    description="Flake8 plugin to detect (too) common mistakes and bad practices in Tkinter projects",
     author="rdbende",
     author_email="rdbende@gmail.com",
     url="https://github.com/rdbende/flake8-tkinter",
@@ -20,7 +20,7 @@ setup(
     long_description_content_type="text/markdown",
     python_requires=">=3.7",
     install_requires=["flake8>=3.7"],
-    packages=["flake8_tkinter", "flake8_tkinter/rules"],
+    packages=["flake8_tkinter", "flake8_tkinter/checkers"],
     entry_points={"flake8.extension": ["TK = flake8_tkinter:Plugin"]},
     license="MIT license",
     classifiers=[
