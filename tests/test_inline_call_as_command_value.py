@@ -1,36 +1,25 @@
 from base import _results
 
 
-def test_inline_call_as_command_argument_value_for_Button():
+def test_inline_call_as_command_argument_value_tkinter():
     code = "import tkinter as tk\ntk.Button(command=handler())"
     assert _results(code) == {
-        "2:1 TK020 Inline call to 'handler' for 'command' argument at 'tk.Button'. Perhaps you meant 'command=handler' (without the parentheses)?"
+        "2:19 TK111 Calling 'handler' instead of referencing it for 'command' argument. Perhaps you meant 'command=handler' (without the parentheses)?"
     }
 
-
-def test_inline_call_as_command_argument_value_for_Checkbutton():
-    code = "import tkinter as tk\ntk.Checkbutton(command=handler())"
+    code = "from tkinter import ttk\nttk.Button(command=handler())"
     assert _results(code) == {
-        "2:1 TK020 Inline call to 'handler' for 'command' argument at 'tk.Checkbutton'. Perhaps you meant 'command=handler' (without the parentheses)?"
+        "2:20 TK111 Calling 'handler' instead of referencing it for 'command' argument. Perhaps you meant 'command=handler' (without the parentheses)?"
     }
 
 
-def test_inline_call_as_command_argument_value_for_Radiobutton():
-    code = "import tkinter as tk\ntk.Radiobutton(command=handler())"
+def test_inline_call_as_command_argument_value_widget_config():
+    code = "from tkinter import ttk\nbutton = ttk.Button()\nbutton.config(command=handler())"
     assert _results(code) == {
-        "2:1 TK020 Inline call to 'handler' for 'command' argument at 'tk.Radiobutton'. Perhaps you meant 'command=handler' (without the parentheses)?"
+        "3:23 TK111 Calling 'handler' instead of referencing it for 'command' argument. Perhaps you meant 'command=handler' (without the parentheses)?"
     }
 
 
-def test_inline_call_as_command_argument_value_for_Scale():
-    code = "import tkinter as tk\ntk.Scale(command=handler())"
-    assert _results(code) == {
-        "2:1 TK020 Inline call to 'handler' for 'command' argument at 'tk.Scale'. Perhaps you meant 'command=handler' (without the parentheses)?"
-    }
-
-
-def test_inline_call_as_command_argument_value_for_Scrollbar():
-    code = "import tkinter as tk\ntk.Scrollbar(command=handler())"
-    assert _results(code) == {
-        "2:1 TK020 Inline call to 'handler' for 'command' argument at 'tk.Scrollbar'. Perhaps you meant 'command=handler' (without the parentheses)?"
-    }
+def test_inline_call_as_command_argument_value_not_tk():
+    code = "Checkbutton(command=handler())"
+    assert _results(code) == set()

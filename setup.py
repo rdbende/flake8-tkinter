@@ -1,5 +1,4 @@
 from setuptools import setup
-import subprocess
 from flake8_tkinter import __version__
 
 
@@ -21,7 +20,7 @@ setup(
     long_description_content_type="text/markdown",
     python_requires=">=3.7",
     install_requires=["flake8>=3.7"],
-    py_modules=["flake8_tkinter"],
+    packages=["flake8_tkinter", "flake8_tkinter/rules"],
     entry_points={"flake8.extension": ["TK = flake8_tkinter:Plugin"]},
     license="MIT license",
     classifiers=[

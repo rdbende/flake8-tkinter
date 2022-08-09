@@ -1,9 +1,11 @@
+from __future__ import annotations
+
 import ast
 
 from flake8_tkinter import Plugin
 
 
-def _results(code_string):
+def _results(code_string: str) -> set[str]:
     tree = ast.parse(code_string)
     plugin = Plugin(tree)
 

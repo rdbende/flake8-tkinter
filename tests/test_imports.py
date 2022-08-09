@@ -2,21 +2,21 @@ from base import _results
 
 
 def test_from_tkinter_import_star():
-    code = "from abc import *\nfrom tkinter import *"
+    code = "import tkinter\nfrom tkinter import *"
     assert _results(code) == {
-        "2:1 TK001 'from tkinter import *' used; consider using 'import tkinter as tk' or simply 'import tkinter'"
+        "2:1 TK201 Using `from tkinter import *` is generally a bad practice and discouraged. Use `import tkinter as tk` or simply `import tkinter` instead."
     }
 
 
-def test_from_tkinter_ttk_import_star():
-    code = "from abc import *\nfrom tkinter.ttk import *"
+def test_from_tkinter_dot_ttk_import_star():
+    code = "from tkinter.ttk import Button\nfrom tkinter.ttk import *"
     assert _results(code) == {
-        "2:1 TK002 'from tkinter.ttk import *' used; consider using 'from tkinter import ttk'"
+        "2:1 TK202 Using `from tkinter.ttk import *` is generally a bad practice and discouraged. Use `from tkinter import ttk` instead."
     }
 
 
-def test_import_tkinter_ttk_as_ttk():
-    code = "from abc import *\nimport tkinter.ttk as ttk"
+def test_import_tkinter_dot_ttk_as_ttk():
+    code = "from tkinter import ttk\nimport tkinter.ttk as ttk"
     assert _results(code) == {
-        "2:1 TK010 'import tkinter.ttk as ttk' used; could be simplified to 'from tkinter import ttk'"
+        "2:1 TK211 Using `import tkinter.ttk as ttk` is pointless. Use `from tkinter import ttk` instead."
     }
