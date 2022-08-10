@@ -48,7 +48,7 @@ class Visitor(ast.NodeVisitor):
         if isinstance(node.func, ast.Attribute):
             if TK111.detect(node):
                 self.append(*TK111.get_pos(node), TK111, node)
-            elif TK231.detect(node):
+            if TK231.detect(node):
                 self.append(node.lineno, node.col_offset, TK231, node)
 
         self.generic_visit(node)
