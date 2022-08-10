@@ -6,7 +6,7 @@ from typing import Generator
 
 from .visitor import Visitor
 
-__version__ = "0.2.4"
+__version__ = "0.2.5"
 
 
 @dataclass(frozen=True)
