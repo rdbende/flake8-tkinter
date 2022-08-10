@@ -6,6 +6,16 @@ Flake8 plugin to detect (too) common mistakes and bad practices in Tkinter proje
 ## List of warnings
 
 
+### `TK102`
+Don't call `mainloop` multiple times, as it's totally unnecessary
+
+```diff
+def func():
+    top = tk.Toplevel()
+-     top.mainloop()
+root.mainloop()
+```
+
 ### `TK111`
 Calling a function instead of passing the reference for `command` argument
 
@@ -92,13 +102,21 @@ for index, foo in enumerate(foos):
 +     bindings.append(tcl_command)  # Clean them up later with `.deletecommand()`
 ```
 
+### `TK304`
+Don't use things like `add="+"`. Use a boolean instead
+
+```diff
+- w.bind("<Button-1>, foo, add="+")
++ w.bind("<Button-1>, foo, add=True)
+```
+
 ## More planned warnings
 
 - Common mistakes
   - [ ] Warn when assigning to result of `w.pack()` | `w.grid()` | `w.place()` call (`None`) (**TK131**)
   - [ ] Warn when using more than one`Tk` instance: child windows must be created from `Toplevel` class (**TK101**)
-  - [ ] Warn when using more than one `mainloop()` call (**TK102**)
-  - [ ] Suggest using `w.after(ms)` instead of `time.sleep(s)` (**TK121**) (current implementation is kind of dumb)
+  - [x] Warn when using more than one `mainloop()` call (**TK102**)
+  - [ ] Suggest using `w.after(ms)` instead of `time.sleep(s)` (**TK121**)
   - [ ] Suggest keeping reference of local `PhotoImage` instance to avoid GC (**TK141**)
   - [ ] Suggest refactoring code that uses `w.update`, as it's usually pointless, [potentially harmful](https://wiki.tcl-lang.org/page/Update+considered+harmful), and considered a code smell (**TK103**)
   - [ ] Warn when using a float as `Text` widget index (**TK132**)
@@ -124,7 +142,7 @@ for index, foo in enumerate(foos):
   - [ ] Warn if a parent is not specified (?) (**TK306**)
   - [ ] Prefer to use more readable `widget.config(property=value)` instead of `widget["property"] = value` (**TK302**)
   - [ ] Suggest changing tkinter constants to string literals (this option should be disabled by default) (**TK307**)
-  - [ ] Warn when using `add="+"` in bindings, use a boolean instead (**TK304**)
+  - [x] Warn when using `add="+"` in bindings, use a boolean instead (**TK304**)
 
 
 ## Development
