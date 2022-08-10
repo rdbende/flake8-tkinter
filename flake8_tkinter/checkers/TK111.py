@@ -26,7 +26,19 @@ class TK111(CheckerBase):
     def get_data(node: ast.Call) -> dict[str, str]:
         for keyword in node.keywords:
             if keyword.arg == "command":
-                return {"handler": keyword.value.func.id}
+                if isinstance(keyword.value.func, ast.Name):
+                    return {"handler": keyword.value.func.id}
+                elif isinstance(keyword.value.func, ast.Attribute):
+                    return {
+                        "handler": ".".join(
+                            [keyword.value.func.value.id, keyword.value.func.attr]
+                        )
+                    }
+                else:
+                    raise NotImplementedError(
+                        "Oh, crap! This is an error with flake8-tkinter.\n\
+                     Please report this error here: https://github.com/rdbende/flake8-tkinter/issues/new"
+                    )
 
     @staticmethod
     def get_pos(node: ast.Call) -> tuple[int, int]:
