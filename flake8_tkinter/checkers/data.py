@@ -8,6 +8,7 @@ class _Settings:
     tkinter_used: bool = False
     tkinter_as: str = ""
     ttk_as: str = ""
+    mainloop_already_called: bool = False
 
 
 Settings = _Settings()

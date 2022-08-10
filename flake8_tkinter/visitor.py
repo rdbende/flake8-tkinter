@@ -7,6 +7,7 @@ if TYPE_CHECKING:
     from .checkers.base import CheckerBase
 
 from .checkers.data import Settings
+from .checkers.TK102 import TK102
 from .checkers.TK111 import TK111
 from .checkers.TK112 import TK112
 from .checkers.TK201 import TK201
@@ -15,6 +16,7 @@ from .checkers.TK211 import TK211
 from .checkers.TK221 import TK221
 from .checkers.TK231 import TK231
 from .checkers.TK232 import TK232
+from .checkers.TK304 import TK304
 
 
 class Visitor(ast.NodeVisitor):
@@ -56,6 +58,11 @@ class Visitor(ast.NodeVisitor):
                 self.append(*TK112.get_pos(node), TK112, node)
             if TK231.detect(node):
                 self.append(node.lineno, node.col_offset, TK231, node)
+            if TK304.detect(node):
+                self.append(*TK304.get_pos(node), TK304, node)
+
+        if TK102.detect(node):
+            self.append(node.lineno, node.col_offset, TK102, node)
 
         self.generic_visit(node)
 
