@@ -11,3 +11,7 @@ class _Settings:
 
 
 Settings = _Settings()
+
+
+def is_from_tkinter(thing: str) -> bool:
+    return thing in {Settings.tkinter_as, Settings.ttk_as}

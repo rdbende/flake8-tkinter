@@ -14,6 +14,14 @@ Calling a function instead of passing the reference for `command` argument
 + ttk.Button(command=foo)
 ```
 
+### `TK112`
+Calling a function with arguments instead of using a lambda or a partial function and passing the reference for `command` argument
+
+```diff
+- ttk.Button(command=foo(bar, baz))
++ ttk.Button(command=lambda: foo(bar, baz))
+```
+
 ### `TK201`
 Don't use `from tkinter import *`
 
@@ -95,9 +103,8 @@ for index, foo in enumerate(foos):
   - [ ] Suggest refactoring code that uses `w.update`, as it's usually pointless, [potentially harmful](https://wiki.tcl-lang.org/page/Update+considered+harmful), and considered a code smell (**TK103**)
   - [ ] Warn when using a float as `Text` widget index (**TK132**)
   - [ ] Infinite loop in a handler - propose to use recursive function with `w.after` (**TK122**)
-  - [ ] Event and callback handlers (I can't remember what I meant by this sentence, lol)
   - [x] Warn when calling the function inline, instead of just referencing it (**TK111**)
-  - [ ] Suggest using a lambda function when args are passed to inline calls (**TK112**)
+  - [x] Suggest using a lambda function when args are passed to inline calls (**TK112**)
 
 - Common best practices
   - [x] Warn on `from tkinter import *`, suggest using `import tkinter` or `import tkinter as tk` instead (**TK201**)

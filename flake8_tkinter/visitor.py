@@ -8,6 +8,7 @@ if TYPE_CHECKING:
 
 from .checkers.data import Settings
 from .checkers.TK111 import TK111
+from .checkers.TK112 import TK112
 from .checkers.TK201 import TK201
 from .checkers.TK202 import TK202
 from .checkers.TK211 import TK211
@@ -21,6 +22,11 @@ class Visitor(ast.NodeVisitor):
         self.problems: list[tuple[int, int, str]] = []
 
     def visit_ImportFrom(self, node: ast.ImportFrom) -> None:  # noqa: N802
+        for name in node.names:
+            if name.name == "ttk":
+                Settings.tkinter_used = True
+                Settings.ttk_as = name.asname or name.name
+
         if node.module == "tkinter" and TK201.detect(node):
             self.append(node.lineno, node.col_offset, TK201)
         elif node.module == "tkinter.ttk" and TK202.detect(node):
@@ -32,12 +38,10 @@ class Visitor(ast.NodeVisitor):
         for name in node.names:
             if name.name == "tkinter":
                 Settings.tkinter_used = True
-                Settings.tkinter_as = name.asname or "tkinter"
-
-            if name.name == "tkinter.ttk":
+                Settings.tkinter_as = name.asname or name.name
+            elif name.name == "tkinter.ttk":
                 Settings.tkinter_used = True
-                Settings.ttk_as = name.asname or "tkinter.ttk"
-
+                Settings.ttk_as = name.asname or name.name
                 if TK211.detect():
                     self.append(node.lineno, node.col_offset, TK211)
 
@@ -48,6 +52,8 @@ class Visitor(ast.NodeVisitor):
         if isinstance(node.func, ast.Attribute):
             if TK111.detect(node):
                 self.append(*TK111.get_pos(node), TK111, node)
+            elif TK112.detect(node):
+                self.append(*TK112.get_pos(node), TK112, node)
             if TK231.detect(node):
                 self.append(node.lineno, node.col_offset, TK231, node)
 
