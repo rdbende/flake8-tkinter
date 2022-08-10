@@ -12,7 +12,7 @@ Don't call `mainloop` multiple times, as it's totally unnecessary
 ```diff
 def func():
     top = tk.Toplevel()
--     top.mainloop()
+-   top.mainloop()
 root.mainloop()
 ```
 
@@ -97,9 +97,9 @@ Creating tag bindings in a loop can lead to memory leaks, because the created Tc
 
 ```diff
 for index, foo in enumerate(foos):
--     w.tag_bind(f"bar_{index}", "<Button-1>, baz)
-+     tcl_command = w.tag_bind(f"bar_{index}", "<Button-1>, baz)
-+     bindings.append(tcl_command)  # Clean them up later with `.deletecommand()`
+-   w.tag_bind(f"bar_{index}", "<Button-1>, baz)
++   tcl_command = w.tag_bind(f"bar_{index}", "<Button-1>, baz)
++   bindings.append(tcl_command)  # Clean them up later with `.deletecommand()`
 ```
 
 ### `TK304`
