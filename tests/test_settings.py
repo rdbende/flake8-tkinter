@@ -1,5 +1,5 @@
 from base import lint
-from flake8_tkinter.checkers.data import Settings
+from flake8_tkinter.utils import Settings
 
 
 def test_import_tkinter():
@@ -12,9 +12,9 @@ def test_import_tkinter_as_foo():
     assert Settings.tkinter_as == "foo"
 
 
-def test_import_tkinter_dot_ttk_as_baz():
-    lint("import tkinter.ttk as baz")
-    assert Settings.ttk_as == "baz"
+def test_import_tkinter_dot_ttk_as_bar():
+    lint("import tkinter.ttk as bar")
+    assert Settings.ttk_as == "bar"
 
 
 def test_from_tkinter_import_ttk():
@@ -22,6 +22,6 @@ def test_from_tkinter_import_ttk():
     assert Settings.ttk_as == "ttk"
 
 
-def test_from_tkinter_import_ttk_as_bar():
-    lint("from tkinter import ttk as bar")
-    assert Settings.ttk_as == "bar"
+def test_from_tkinter_import_ttk_as_baz():
+    lint("from tkinter import ttk as baz")
+    assert Settings.ttk_as == "baz"
