@@ -1,12 +1,12 @@
 from __future__ import annotations
 
 import ast
+from collections.abc import Generator
 from dataclasses import dataclass
-from typing import Generator
 
 from .visitor import Visitor
 
-__version__ = "0.2.5"
+__version__ = "0.5.0"
 
 
 @dataclass(frozen=True)
@@ -19,5 +19,5 @@ class Plugin:
         visitor = Visitor()
         visitor.visit(self.tree)
 
-        for line, col, msg in visitor.problems:
-            yield line, col, msg, None
+        for error in visitor.errors:
+            yield error.line, error.col, error.msg, None

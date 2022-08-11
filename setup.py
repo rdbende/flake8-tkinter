@@ -20,7 +20,7 @@ setup(
     long_description_content_type="text/markdown",
     python_requires=">=3.7",
     install_requires=["flake8>=3.7"],
-    packages=["flake8_tkinter", "flake8_tkinter/checkers"],
+    packages=["flake8_tkinter", "flake8_tkinter/rules"],
     entry_points={"flake8.extension": ["TK = flake8_tkinter:Plugin"]},
     license="MIT license",
     classifiers=[
