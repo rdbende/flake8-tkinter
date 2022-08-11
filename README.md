@@ -2,6 +2,12 @@
 
 Flake8 plugin to detect (too) common mistakes and bad practices in Tkinter projects
 
+## Installation
+
+```
+pip install flake8-tkinter
+```
+
 
 ## List of warnings
 
@@ -30,6 +36,15 @@ Calling a function with arguments instead of using a lambda or a partial functio
 ```diff
 - ttk.Button(command=foo(bar, baz))
 + ttk.Button(command=lambda: foo(bar, baz))
+```
+
+### `TK131`
+Don't assign to `w.grid()` / `w.pack()` / `w.place()`, it's return value is `None`
+
+```diff
+- btn = ttk.Button().grid()
++ btn = ttk.Button()
++ btn.grid()
 ```
 
 ### `TK201`
@@ -113,7 +128,7 @@ Don't use things like `add="+"`. Use a boolean instead
 ## More planned warnings
 
 - Common mistakes
-  - [ ] Warn when assigning to result of `w.pack()` | `w.grid()` | `w.place()` call (`None`) (**TK131**)
+  - [x] Warn when assigning to result of `w.pack()` | `w.grid()` | `w.place()` call (`None`) (**TK131**)
   - [ ] Warn when using more than one`Tk` instance: child windows must be created from `Toplevel` class (**TK101**)
   - [x] Warn when using more than one `mainloop()` call (**TK102**)
   - [ ] Suggest using `w.after(ms)` instead of `time.sleep(s)` (**TK121**)
@@ -136,7 +151,7 @@ Don't use things like `add="+"`. Use a boolean instead
   - [x] Warn when using `tag_bind` inside a loop, but not storing the Tcl command (can cause memory leaks later) (**TK232**)
 
 - Opinionated suggestions
-  - [ ] Suggest changing things like `root.wm_title()` to `root.title()` (tho I use `wm_` quite often) (**TK305**)
+  - [ ] Suggest changing things like `root.wm_title()` to `root.title()` (tho I use `wm_attributes` quite often, probably that should be an exception) (**TK305**)
   - [ ] Warn when calling `mainloop()` on something other than the root window  (**TK303**)
   - [ ] Suggest using more clear binding sequences, like `<Button-1>` instead of `<1>` and `<Key-a>` instead of `<a>` (**TK301**)
   - [ ] Warn if a parent is not specified (?) (**TK306**)
