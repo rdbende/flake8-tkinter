@@ -17,7 +17,7 @@ from flake8_tkinter.rules.ast_import_from import (
     detect_from_tkinter_import_star,
 )
 from flake8_tkinter.rules.ast_loop import detect_tag_bind_in_loop_badly
-from flake8_tkinter.utils import Error, Settings
+from flake8_tkinter.utils import Error, Settings, get_ancestors
 
 
 class Visitor(ast.NodeVisitor):
@@ -75,6 +75,27 @@ class Visitor(ast.NodeVisitor):
 
     def visit_While(self, node: ast.While) -> None:
         self.extend(detect_tag_bind_in_loop_badly(node))
+
+        self.generic_visit(node)
+
+    def visit_If(self, node: ast.If) -> None:
+        ancestors = get_ancestors(node)
+        if ast.For in ancestors or ast.While in ancestors:
+            self.extend(detect_tag_bind_in_loop_badly(node))
+
+        self.generic_visit(node)
+
+    def visit_With(self, node: ast.With) -> None:
+        ancestors = get_ancestors(node)
+        if ast.For in ancestors or ast.While in ancestors:
+            self.extend(detect_tag_bind_in_loop_badly(node))
+
+        self.generic_visit(node)
+
+    def visit_Try(self, node: ast.Try) -> None:
+        ancestors = get_ancestors(node)
+        if ast.For in ancestors or ast.While in ancestors:
+            self.extend(detect_tag_bind_in_loop_badly(node))
 
         self.generic_visit(node)
 
