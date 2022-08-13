@@ -1,6 +1,9 @@
 # flake8-tkinter
 
-Flake8 plugin to detect (too) common mistakes and bad practices in Tkinter projects
+A flake8 plugin that helps you detect (too) common mistakes and bad practices in you Tkinter project
+
+_Project idea by [@insolor](https://github.com/insolor)_
+
 
 ## Installation
 
@@ -11,118 +14,154 @@ pip install flake8-tkinter
 
 ## List of warnings
 
+Common mistakes
+- **`TK102`**: Using multiple mainloop calls is unnecessary. One call is perfectly enough. ([example](#tk102))
+- **`TK111`**: Calling `callback_handler()` instead of passing the reference for on-click or binding callback. ([example](#tk111))
+- **`TK112`**: Calling `callback_handler()` instead of passing the reference for on-click or binding callback. If you need to call `callback_handler` with arguments, use lambda or functools.partial. ([example](#tk112))
+- **`TK131`**: Assigning result of geometry manager call to a variable. ([example](#tk131))
 
-### `TK102`
-Don't call `mainloop` multiple times, as it's totally unnecessary
+Best practices
+- **`TK201`**: Using `from tkinter import *` is generally a bad practice and discouraged. Use `import tkinter as tk` or simply `import tkinter` instead. ([example](#tk201))
+- **`TK202`**: Using `from tkinter.ttk import *` is generally a bad practice and discouraged. Use `from tkinter import ttk` instead. ([example](#tk202))
+- **`TK211`**: Using `import tkinter.ttk as ttk` is pointless. Use `from tkinter import ttk` instead. ([example](#tk211))
+- **`TK221`**: Using tkinter.TRUE, tkinter.FALSE, etc. is pointless. Use an appropriate Python boolean instead. ([example](#tk221))
+- **`TK231`**: Using bind without `add=True` will overwrite any existing bindings to this sequence on this widget. Either overwrite them explicitly with `add=False` or use `add=True` to keep existing bindings. ([example](#tk231))
+- **`TK232`**: Creating tag bindings in a loop can lead to memory leaks. Store the returned command names in a list to clean them up later. ([example](#tk232))
 
-```diff
-def func():
+Opinionated warnings
+- **`TK304`**: Value for `add` should be a boolean. ([example](#tk304))
+
+## Examples
+
+### TK102
+```python
+# Bad
+def foo():
     top = tk.Toplevel()
--   top.mainloop()
+    ...
+    top.mainloop()
+
+root.mainloop()
+
+# Good
+
+def foo():
+    top = tk.Toplevel()
+    ...
+    
 root.mainloop()
 ```
 
-### `TK111`
-Calling a function instead of passing the reference for `command` argument
+### TK111
+```python
+# Bad
+tk.Button(..., command=foo())
+button.config(command=bar())
+button.bind("<Button-3>", baz())
 
-```diff
-- ttk.Button(command=foo())
-+ ttk.Button(command=foo)
+# Good
+tk.Button(..., command=foo)
+button.config(command=bar)
+button.bind("<Button-3>", baz)
 ```
 
-### `TK112`
-Calling a function with arguments instead of using a lambda or a partial function and passing the reference for `command` argument
+### TK112
+```python
+# Bad
+tk.Button(..., command=foo(arg, kwarg=...))
+button.config(command=bar(arg, kwarg=...))
+button.bind("<Button-3>", baz(arg, kwarg=...))
 
-```diff
-- ttk.Button(command=foo(bar, baz))
-+ ttk.Button(command=lambda: foo(bar, baz))
+# Good
+tk.Button(..., command=lambda: foo(arg, kwarg=...))
+button.config(command=lambda: bar(arg, kwarg=...))
+button.bind("<Button-3>", lambda e: baz(arg, kwarg=...))
 ```
 
-### `TK131`
-Don't assign to `w.grid()` / `w.pack()` / `w.place()`, it's return value is `None`
+### TK131
+```python
+# Bad
+btn = tk.Button().grid()
 
-```diff
-- btn = ttk.Button().grid()
-+ btn = ttk.Button()
-+ btn.grid()
+# Good
+btn = tk.Button()
+btn.grid()
 ```
 
-### `TK201`
-Don't use `from tkinter import *`
+### TK201
+```python
+# Bad
+from tkinter import *
 
-```diff
-- from tkinter import *
-+ import tkinter
+# Good
+import tkinter
 # OR
-+ import tkinter as tk
+import tkinter as tk
 ```
 
-### `TK202`
-Don't use `from tkinter.ttk import *`
+### TK202
+```python
+# Bad
+from tkinter.ttk import *
 
-
-```diff
-- from tkinter.ttk import *
-+ from tkinter import ttk
+# Good
+from tkinter import ttk
 ```
 
-### `TK211`
-`import tkinter.ttk as ttk` is pointless
+### TK211
+```python
+# Bad
+import tkinter.ttk as ttk
 
-```diff
-- import tkinter.ttk as ttk
-+ from tkinter import ttk
+# Good
+from tkinter import ttk
 ```
 
-### `TK221`
-Don't use dumb tkinter constants, use booleans instead
+### TK221
+```python
+# Bad
+w.pack(expand=tk.TRUE)
+w.pack(expand=tk.FALSE)
+w.pack(expand=tk.YES)
+w.pack(expand=tk.NO)
+w.pack(expand=tk.ON)
+w.pack(expand=tk.OFF)
 
-```diff
-- w.pack(expand=tk.TRUE)
-+ w.pack(expand=True)
-
-- w.pack(expand=tk.FALSE)
-+ w.pack(expand=False)
-
-- w.pack(expand=tk.YES)
-+ w.pack(expand=True)
-
-- w.pack(expand=tk.NO)
-+ w.pack(expand=False)
-
-- w.pack(expand=tk.ON)
-+ w.pack(expand=True)
-
-- w.pack(expand=tk.OFF)
-+ w.pack(expand=False)
+# Good
+w.pack(expand=True)
+w.pack(expand=False)
 ```
 
-### `TK231`
-Use `add=True` or explicit `add=False` in bindings
+### TK231
+```python
+# Bad
+w.bind("<Button-1>", foo)
 
-```diff
-- w.bind("<Button-1>, foo)
-+ w.bind("<Button-1>, foo, add=True)
+# Good
+w.bind("<Button-1>", foo, add=True)
 # OR
-+ w.bind("<Button-1>, foo, add=False)
+w.bind("<Button-1>", foo, add=False)
 ```
 
-### `TK232`
-Creating tag bindings in a loop can lead to memory leaks, because the created Tcl commands won't be cleaned up when deleting the tag
-
-```diff
+### TK232
+```python
+# Bad
 for index, foo in enumerate(foos):
--   w.tag_bind(f"bar_{index}", "<Button-1>, baz)
-+   tcl_command = w.tag_bind(f"bar_{index}", "<Button-1>, baz)
-+   bindings.append(tcl_command)  # Clean them up later with `.deletecommand()`
+    w.tag_bind(f"bar_{index}", "<Button-1>, baz)
+    
+# Good
+for index, foo in enumerate(foos):
+    tcl_command = w.tag_bind(f"bar_{index}", "<Button-1>, baz)
+    bindings.append(tcl_command)  # Clean them up later with `.deletecommand()`
 ```
 
-### `TK304`
-Don't use things like `add="+"`. Use a boolean instead
+### TK304
+```python
+# Bad
+w.bind("<Button-1>", foo, add="+")
 
-```diff
-- w.bind("<Button-1>, foo, add="+")
-+ w.bind("<Button-1>, foo, add=True)
+# Good
+w.bind("<Button-1>", foo, add=True)
 ```
 
 ## More planned warnings
@@ -158,6 +197,7 @@ Don't use things like `add="+"`. Use a boolean instead
   - [ ] Prefer to use more readable `widget.config(property=value)` instead of `widget["property"] = value` (**TK302**)
   - [ ] Suggest changing tkinter constants to string literals (this option should be disabled by default) (**TK307**)
   - [x] Warn when using `add="+"` in bindings, use a boolean instead (**TK304**)
+  - [ ] Warn when using things like `end-1c`, `end - 1 chars` is much clearer
 
 
 ## Development
@@ -165,7 +205,3 @@ Don't use things like `add="+"`. Use a boolean instead
 2. Set up a virtual environment, activate, and install `flake8` and `pytest` in it
 3. Run `pip install -e .` to install `flake8-tkinter` in editable format
 4. Run `python3 -m pytest` to test your changes
-
-
-## Credits
-The idea of this project is by [**@insolor**](https://github.com/insolor)
