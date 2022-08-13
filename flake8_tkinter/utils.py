@@ -47,6 +47,7 @@ def get_func_name(node: ast.Call) -> str:
         return f"{func.value.id}.{func.attr}"
     elif isinstance(func, ast.Lambda):
         return "<lambda>"
+    return "<function>"
 
 
 def is_call_attr(node: ast.Assign | ast.Expr) -> bool:
