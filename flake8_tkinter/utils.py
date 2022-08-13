@@ -55,3 +55,15 @@ def is_call_attr(node: ast.Assign | ast.Expr) -> bool:
 
 def is_func(node: ast.Assign | ast.Expr, funcname: str) -> bool:
     return node.value.func.attr == funcname
+
+
+def get_ancestors(node: ast.stmt) -> list[type[ast.stmt]]:
+    result = []
+    while True:
+        if not isinstance(node, ast.Module):
+            result.append(type(node.parent))
+        else:
+            break
+        node = node.parent
+
+    return result

@@ -17,6 +17,11 @@ class Plugin:
 
     def run(self) -> Generator[tuple[int, int, str, None], None, None]:
         visitor = Visitor()
+
+        for node in ast.walk(self.tree):
+            for child in ast.iter_child_nodes(node):
+                child.parent = node
+
         visitor.visit(self.tree)
 
         for error in visitor.errors:
