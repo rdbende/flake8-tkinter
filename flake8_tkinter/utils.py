@@ -60,10 +60,10 @@ def is_func(node: ast.Assign | ast.Expr, funcname: str) -> bool:
 def get_ancestors(node: ast.stmt) -> list[type[ast.stmt]]:
     result = []
     while True:
-        if not isinstance(node, ast.Module):
-            result.append(type(node.parent))
-        else:
+        if isinstance(node, ast.Module):
             break
+        else:
+            result.append(type(node.parent))
         node = node.parent
 
     return result
