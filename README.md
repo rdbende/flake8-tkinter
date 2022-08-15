@@ -177,7 +177,7 @@ w.bind("<Button-1>", foo, add=True)
   - [x] Warn when calling the function inline, instead of just referencing it (**TK111**)
   - [x] Suggest using a lambda function when args are passed to inline calls (**TK112**)
   - [ ] Warn when using `<Shift-Tab>` binding, it doesn't work on Linux
-  - [ ] Command handler should be a callable. (Sound insane, but look at [this](ttps://www.reddit.com/r/Tkinter/comments/w84lt0/does_tkinter_button_command_only_accept_functions)
+  - [ ] Callback handler should be a callable. (Sounds insane, but look at [this](https://www.reddit.com/r/Tkinter/comments/w84lt0/does_tkinter_button_command_only_accept_functions))
 
 - Common best practices
   - [x] Warn on `from tkinter import *`, suggest using `import tkinter` or `import tkinter as tk` instead (**TK201**)
