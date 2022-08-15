@@ -189,6 +189,7 @@ w.bind("<Button-1>", foo, add=True)
   - [ ] Warn when a huge app isn't OO (?)
   - [x] Warn when not using `add=True` or explicit `add=False` in bindings (**TK231**)
   - [x] Warn when using `tag_bind` inside a loop, but not storing the Tcl command (can cause memory leaks later) (**TK232**)
+  - [ ] Warn when using subsequent `wm_attributes` calls. It can take value pairs.
 
 - Opinionated suggestions
   - [ ] Suggest changing things like `root.wm_title()` to `root.title()` (tho I use `wm_attributes` quite often, probably that should be an exception) (**TK305**)
