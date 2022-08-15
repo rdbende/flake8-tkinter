@@ -197,6 +197,7 @@ w.bind("<Button-1>", foo, add=True)
   - [ ] Suggest changing tkinter constants to string literals (this option should be disabled by default) (**TK307**)
   - [x] Warn when using `add="+"` in bindings, use a boolean instead (**TK304**)
   - [ ] Warn when using things like `end-1c`, `end - 1 chars` is much clearer
+  - [ ] Report use of `tkinter.Message`
 
 
 ## Development
