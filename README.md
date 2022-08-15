@@ -44,7 +44,6 @@ def foo():
 root.mainloop()
 
 # Good
-
 def foo():
     top = tk.Toplevel()
     ...
@@ -147,11 +146,11 @@ w.bind("<Button-1>", foo, add=False)
 ```python
 # Bad
 for index, foo in enumerate(foos):
-    w.tag_bind(f"bar_{index}", "<Button-1>, baz)
+    w.tag_bind(f"bar_{index}", "<Button-1>", baz)
     
 # Good
 for index, foo in enumerate(foos):
-    tcl_command = w.tag_bind(f"bar_{index}", "<Button-1>, baz)
+    tcl_command = w.tag_bind(f"bar_{index}", "<Button-1>", baz)
     bindings.append(tcl_command)  # Clean them up later with `.deletecommand()`
 ```
 
