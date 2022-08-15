@@ -176,6 +176,7 @@ w.bind("<Button-1>", foo, add=True)
   - [ ] Infinite loop in a handler - propose to use recursive function with `w.after` (**TK122**)
   - [x] Warn when calling the function inline, instead of just referencing it (**TK111**)
   - [x] Suggest using a lambda function when args are passed to inline calls (**TK112**)
+  - [ ] Warn when using `<Shift-Tab>` binding, it doesn't work on Linux
 
 - Common best practices
   - [x] Warn on `from tkinter import *`, suggest using `import tkinter` or `import tkinter as tk` instead (**TK201**)
