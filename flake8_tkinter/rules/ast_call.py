@@ -8,6 +8,7 @@ from flake8_tkinter.utils import (
     Settings,
     get_func_name,
     is_functools_partial,
+    is_if_name_equals_main,
     is_tkinter_namespace,
 )
 
@@ -97,7 +98,8 @@ def detect_multiple_mainloop_calls(node: ast.Call) -> list[Error] | None:
         and not (node.args or node.keywords)
     ):
         if Settings.mainloop_already_called:
-            return [Error(node.lineno, node.col_offset, TK102)]
+            if not hasattr(node.parent, "parent") or not is_if_name_equals_main(node.parent.parent):
+                return [Error(node.lineno, node.col_offset, TK102)]
         else:
             Settings.mainloop_already_called = True
 

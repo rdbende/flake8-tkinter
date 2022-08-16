@@ -58,6 +58,16 @@ def is_func(node: ast.Assign | ast.Expr, funcname: str) -> bool:
     return node.value.func.attr == funcname
 
 
+def is_if_name_equals_main(node: ast.If) -> bool:
+    return (
+        isinstance(node.test, ast.Compare)
+        and isinstance(node.test.left, ast.Name)
+        and node.test.left.id == "__name__"
+        and isinstance(node.test.comparators[0], ast.Constant)
+        and node.test.comparators[0].value == "__main__"
+    )  # doesn't check the '==', but it's good enough
+
+
 def get_ancestors(node: ast.stmt) -> list[type[ast.stmt]]:
     result = []
     while True:
