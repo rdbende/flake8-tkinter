@@ -4,7 +4,10 @@ import ast
 
 from flake8_tkinter.constants import BIND_METHODS
 from flake8_tkinter.rules.ast_assign import detect_assign_to_gm_return
-from flake8_tkinter.rules.ast_attribute import detect_use_of_dumb_constant
+from flake8_tkinter.rules.ast_attribute import (
+    detect_use_of_dumb_constant,
+    detect_use_of_tkinter_dot_message,
+)
 from flake8_tkinter.rules.ast_call import (
     detect_bind_add_is_not_boolean,
     detect_bind_add_missing,
@@ -32,6 +35,7 @@ class Visitor(ast.NodeVisitor):
 
     def visit_Attribute(self, node: ast.Attribute) -> None:
         self.extend(detect_use_of_dumb_constant(node))
+        self.extend(detect_use_of_tkinter_dot_message(node))
 
         self.generic_visit(node)
 

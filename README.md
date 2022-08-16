@@ -27,6 +27,7 @@ Best practices
 - **`TK221`**: Using tkinter.TRUE, tkinter.FALSE, etc. is pointless. Use an appropriate Python boolean instead. ([example](#tk221))
 - **`TK231`**: Using bind without `add=True` will overwrite any existing bindings to this sequence on this widget. Either overwrite them explicitly with `add=False` or use `add=True` to keep existing bindings. ([example](#tk231))
 - **`TK232`**: Creating tag bindings in a loop can lead to memory leaks. Store the returned command names in a list to clean them up later. ([example](#tk232))
+- **`TK251`**: Using `tkinter.Message` widget. It's redundant since `tkinter.Label` provides the same functionality.
 
 Opinionated warnings
 - **`TK304`**: Value for `add` should be a boolean. ([example](#tk304))
@@ -156,6 +157,16 @@ for index, foo in enumerate(foos):
     bindings.append(tcl_command)  # Clean them up later with `.deletecommand()`
 ```
 
+### TK251
+_Yes, there's some minor diffrence in text wrapping difference, but that can be adjusted_
+```python
+# Bad
+w = tkinter.Message()
+
+# Good
+w = tkinter.Label()
+```
+
 ### TK304
 ```python
 # Bad
@@ -181,8 +192,7 @@ w.bind("<Button-1>", foo, add=True)
 - Best practices (TK201-TK299)
     - `TK222`: Using `tk.N+tk.S+tk.E+tk.W` and combinations like that. Use `tk.NSEW`, or some other constant instead.
     - `TK241`: Creating a widget without parent specified, and there is a container in the same scope.
-    - `TK251`Using `tkinter.Message` widget. It's redundant since `tkinter.Label` provides the same functionality.
-    - `TK261`Using subsequent `wm_attributes` calls. It can take value pairs.
+    - `TK261`: Using subsequent `wm_attributes` calls. It can take value pairs.
 
 - Code quality (TK301-TK399)
     - `TK301`: Suggest using more clear binding sequences, like `<Button-1>` instead of `<1>` and `<Key-a>` instead of `<a>`.
