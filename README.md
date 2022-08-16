@@ -17,7 +17,7 @@ pip install flake8-tkinter
 Common mistakes
 - **`TK102`**: Using multiple mainloop calls is unnecessary. One call is perfectly enough. ([example](#tk102))
 - **`TK111`**: Calling `callback_handler()` instead of passing the reference for on-click or binding callback. ([example](#tk111))
-- **`TK112`**: Calling `callback_handler()` instead of passing the reference for on-click or binding callback. If you need to call `callback_handler` with arguments, use lambda or functools.partial. ([example](#tk112))
+- **`TK112`**: Calling `callback_handler()` with arguments instead of passing the reference for on-click or binding callback. If you need to call `callback_handler` with arguments, use lambda or functools.partial. ([example](#tk112))
 - **`TK131`**: Assigning result of geometry manager call to a variable. ([example](#tk131))
 
 Best practices
@@ -132,6 +132,7 @@ w.pack(expand=False)
 ```
 
 ### TK231
+_Will be renamed to TK141 in v1.0.0_
 ```python
 # Bad
 w.bind("<Button-1>", foo)
@@ -143,6 +144,7 @@ w.bind("<Button-1>", foo, add=False)
 ```
 
 ### TK232
+_Will be renamed to TK142 in v1.0.0_
 ```python
 # Bad
 for index, foo in enumerate(foos):
@@ -163,44 +165,39 @@ w.bind("<Button-1>", foo, add="+")
 w.bind("<Button-1>", foo, add=True)
 ```
 
-## More planned warnings
+## Planned warnings
 
-- Common mistakes
-  - [x] Warn when assigning to result of `w.pack()` | `w.grid()` | `w.place()` call (`None`) (**TK131**)
-  - [ ] Warn when using more than one`Tk` instance: child windows must be created from `Toplevel` class (**TK101**)
-  - [x] Warn when using more than one `mainloop()` call (**TK102**)
-  - [ ] Suggest using `w.after(ms)` instead of `time.sleep(s)` (**TK121**)
-  - [ ] Suggest keeping reference of local `PhotoImage` instance to avoid GC (**TK141**)
-  - [ ] Suggest refactoring code that uses `w.update`, as it's usually pointless, [potentially harmful](https://wiki.tcl-lang.org/page/Update+considered+harmful), and considered a code smell (**TK103**)
-  - [ ] Warn when using a float as `Text` widget index (**TK132**)
-  - [ ] Infinite loop in a handler - propose to use recursive function with `w.after` (**TK122**)
-  - [x] Warn when calling the function inline, instead of just referencing it (**TK111**)
-  - [x] Suggest using a lambda function when args are passed to inline calls (**TK112**)
-  - [ ] Warn when using `<Shift-Tab>` binding, it doesn't work on Linux
-  - [ ] Callback handler should be a callable. (Sounds insane, but look at [this](https://www.reddit.com/r/Tkinter/comments/w84lt0/does_tkinter_button_command_only_accept_functions))
+- Common mistakes (TK101-TK179)
+    - `TK101`: Using multiple `tkinter.Tk` instances. Child windows must be created from `tkinter.Toplevel`.
+    - `TK103`: Suggest refactoring code that uses `.update()`, as it's usually pointless, [potentially harmful](https://wiki.tcl-lang.org/page/Update+considered+harmful), and considered a code smell.
+    - `TK113`: Callback handler should be a callable ([lol](https://www.reddit.com/r/Tkinter/comments/w84lt0/does_tkinter_button_command_only_accept_functions))
+    - `TK121`: Using `time.sleep()` in tkinter code. Use `.after()` in some form instead.
+    - `TK122`: Using an infinite loop in callback handler. Propose to use recursive function with `.after()`.
+    - `TK141`: Suggest keeping reference of local `PhotoImage` instance to avoid GC.
 
-- Common best practices
-  - [x] Warn on `from tkinter import *`, suggest using `import tkinter` or `import tkinter as tk` instead (**TK201**)
-  - [x] Warn on `from tkinter.ttk import *`, suggest using `from tkinter import ttk` instead (**TK202**)
-  - [x] Warn on `import tkinter.ttk as ttk`, as `from tkinter import ttk` is simpler (**TK211**)
-  - [x] Suggest changing `tk.TRUE` and `tk.FALSE` to `True` and `False`, as there's really no reason for using these constants instead of booleans (**TK221**)
-  - [ ] Suggest using `tk.NSEW` instead of `tk.N+tk.S+tk.E+tk.W`, and other combinations (**TK222**)
-  - [ ] A widget is created without a parent container specified, and there is a container in the same scope (`tk.Toplevel` or `tk.Frame`), or the widget is created in a method a subclass of `tk.Tk`, `tk.Toplevel` or `tk.Frame` (**TK232**)
-  - [ ] Warn when a huge app isn't OO (?)
-  - [x] Warn when not using `add=True` or explicit `add=False` in bindings (**TK231**)
-  - [x] Warn when using `tag_bind` inside a loop, but not storing the Tcl command (can cause memory leaks later) (**TK232**)
-  - [ ] Warn when using subsequent `wm_attributes` calls. It can take value pairs.
+- Cross platform (TK181-TK199)
+    - `TK181`: Using `<Shift-Tab>` binding. It doesn't work on Linux.
 
-- Opinionated suggestions
-  - [ ] Suggest changing things like `root.wm_title()` to `root.title()` (tho I use `wm_attributes` quite often, probably that should be an exception) (**TK305**)
-  - [ ] Warn when calling `mainloop()` on something other than the root window  (**TK303**)
-  - [ ] Suggest using more clear binding sequences, like `<Button-1>` instead of `<1>` and `<Key-a>` instead of `<a>` (**TK301**)
-  - [ ] Warn if a parent is not specified (?) (**TK306**)
-  - [ ] Prefer to use more readable `widget.config(property=value)` instead of `widget["property"] = value` (**TK302**)
-  - [ ] Suggest changing tkinter constants to string literals (this option should be disabled by default) (**TK307**)
-  - [x] Warn when using `add="+"` in bindings, use a boolean instead (**TK304**)
-  - [ ] Warn when using things like `end-1c`, `end - 1 chars` is much clearer
-  - [ ] Report use of `tkinter.Message`
+- Best practices (TK201-TK299)
+    - `TK222`: Using `tk.N+tk.S+tk.E+tk.W` and combinations like that. Use `tk.NSEW`, or some other constant instead.
+    - `TK241`: Creating a widget without parent specified, and there is a container in the same scope.
+    - `TK251`Using `tkinter.Message` widget. It's redundant since `tkinter.Label` provides the same functionality.
+    - `TK261`Using subsequent `wm_attributes` calls. It can take value pairs.
+
+- Code quality (TK301-TK399)
+    - `TK301`: Suggest using more clear binding sequences, like `<Button-1>` instead of `<1>` and `<Key-a>` instead of `<a>`.
+    - `TK302`: Suggest using more clear `tkinter.Text` indexes, like `end - 1 chars` instead of `end-1c`.
+    - `TK303`: Using a float as `tkinter.Text` index. It works because how Tkinter translates Python objects to Tcl, but it shouldn't.
+
+- OO (TK401-TK499)
+    - `TK401`: Consider refactoring a huge app with OOP.
+    - `TK402`: Consider refactoring widget into separate class.
+    
+- Opinionated rules (TK501-TK599)
+    - `TK501`: Calling `mainloop()` on something other than the root window.
+    - `TK502`: Using things like `root.wm_title()`. Use `root.title()`. (But there should be exceptions, like `wm_attributes`)
+    - `TK503`: Using subscripting for widget cget and configure. Use `.cget()` and `.configure()` instead.
+    - `TK504`: Using a tkinter constant. Use a string literal instead (should disabled by default)    
 
 
 ## Development
