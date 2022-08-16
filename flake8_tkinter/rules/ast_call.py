@@ -73,7 +73,7 @@ def detect_called_func_bind(node: ast.Call) -> list[Error] | None:
     ):
         func = node.args[1 if node.func.attr != "bind_class" else 2]
         if isinstance(func, ast.Call):
-            msg = ""
+            msg = None
 
             if not (func.args or func.keywords):
                 msg = TK111_bind
@@ -85,7 +85,7 @@ def detect_called_func_bind(node: ast.Call) -> list[Error] | None:
                     Error(
                         func.func.lineno,
                         func.func.col_offset,
-                        msg.format(handler=func.func.id),
+                        msg.format(handler=get_func_name(func)),
                     )
                 ]
 

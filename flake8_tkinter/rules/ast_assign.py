@@ -13,6 +13,7 @@ def detect_assign_to_gm_return(node: ast.Assign) -> list[Error] | None:
         if (
             is_attr_call(element)
             and is_attr_call(element.func.value)
+            and isinstance(element.func.value.func.value, ast.Name)
             and is_tkinter_namespace(element.func.value.func.value.id)
             and element.func.attr in GM_METHODS
         ):
