@@ -50,7 +50,7 @@ def detect_called_func_command_arg(node: ast.Call) -> list[Error] | None:
         for keyword in node.keywords:
             func = keyword.value
             if isinstance(func, ast.Call) and keyword.arg in COMMAND_ARGS:
-                msg = ""
+                msg = None
 
                 if not (func.args or func.keywords):
                     msg = TK111_command
