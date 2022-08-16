@@ -50,8 +50,8 @@ def get_func_name(node: ast.Call) -> str:
     return "<function>"
 
 
-def is_attr_call(node: ast.Assign | ast.Expr) -> bool:
-    return isinstance(node.value, ast.Call) and isinstance(node.value.func, ast.Attribute)
+def is_attr_call(node: ast.stmt) -> bool:
+    return isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)
 
 
 def is_func(node: ast.Assign | ast.Expr, funcname: str) -> bool:
