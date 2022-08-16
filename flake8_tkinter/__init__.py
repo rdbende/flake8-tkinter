@@ -4,7 +4,7 @@ import ast
 from collections.abc import Generator
 from dataclasses import dataclass
 
-from .visitor import Visitor
+from flake8_tkinter.visitor import Visitor
 
 __version__ = "0.5.0"
 
