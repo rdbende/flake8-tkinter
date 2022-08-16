@@ -16,7 +16,9 @@ def detect_tag_bind_in_loop_badly(node: ast.For | ast.While) -> list[Error] | No
     appended = False
     tag_bind_pos = (0, 0)
 
-    elems = [el for el in node.body if isinstance(el, (ast.Assign, ast.Expr)) and is_attr_call(el.value)]
+    elems = [
+        el for el in node.body if isinstance(el, (ast.Assign, ast.Expr)) and is_attr_call(el.value)
+    ]
 
     for expr in elems:
         if is_func(expr, "tag_bind"):

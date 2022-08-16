@@ -68,7 +68,9 @@ def detect_called_func_command_arg(node: ast.Call) -> list[Error] | None:
 
 
 def detect_called_func_bind(node: ast.Call) -> list[Error] | None:
-    if node.func.attr != "tag_bind" and len(node.args) >= (2 if node.func.attr != "bind_class" else 3):
+    if node.func.attr != "tag_bind" and len(node.args) >= (
+        2 if node.func.attr != "bind_class" else 3
+    ):
         func = node.args[1 if node.func.attr != "bind_class" else 2]
         if isinstance(func, ast.Call):
             msg = ""
