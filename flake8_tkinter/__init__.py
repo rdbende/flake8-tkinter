@@ -1,10 +1,15 @@
 from __future__ import annotations
 
 import ast
-from collections.abc import Generator
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 from flake8_tkinter.visitor import Visitor
+
+if TYPE_CHECKING:
+    from collections.abc import Generator
+
+    from flake8.options.manager import OptionManager
 
 __version__ = "0.5.0"
 
@@ -26,3 +31,7 @@ class Plugin:
 
         for error in visitor.errors:
             yield error.line, error.col, error.msg, None
+
+    @staticmethod
+    def add_options(optmanager: OptionManager) -> None:
+        optmanager.extend_default_ignore(["TK504"])
