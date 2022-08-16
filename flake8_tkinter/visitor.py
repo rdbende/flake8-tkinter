@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import ast
 
+from flake8_tkinter.constants import BIND_METHODS
 from flake8_tkinter.rules.ast_assign import detect_assign_to_gm_return
 from flake8_tkinter.rules.ast_attribute import detect_use_of_dumb_constant
 from flake8_tkinter.rules.ast_call import (
@@ -34,12 +35,21 @@ class Visitor(ast.NodeVisitor):
 
         self.generic_visit(node)
 
-    def visit_Call(self, node: ast.Call) -> None:
+    def visit_BindMethod(self, node: ast.Call) -> None:
         self.extend(detect_bind_add_is_not_boolean(node))
         self.extend(detect_bind_add_missing(node))
         self.extend(detect_called_func_bind(node))
+
+    def visit_Call(self, node: ast.Call) -> None:
         self.extend(detect_called_func_command_arg(node))
         self.extend(detect_multiple_mainloop_calls(node))
+
+        if (
+            isinstance(node.func, ast.Attribute)
+            and isinstance(node.func.value, ast.Name)  # TODO: can it be something else?
+            and node.func.attr in BIND_METHODS | {"tag_bind"}
+        ):
+            self.visit_BindMethod(node)
 
         self.generic_visit(node)
 

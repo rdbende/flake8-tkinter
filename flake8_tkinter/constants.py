@@ -1,4 +1,4 @@
-BIND_METHODS = {"bind", "bind_all", "bind_class"}
+BIND_METHODS = {"bind", "bind_all", "bind_class", "tag_bind"}
 BIND_METHODS.add("bind_with_data")  # For Porcupine
 
 COMMAND_ARGS = {"command", "xscrollcommand", "yscrollcommand", "postcommand"}

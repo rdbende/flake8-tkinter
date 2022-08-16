@@ -68,13 +68,8 @@ def detect_called_func_command_arg(node: ast.Call) -> list[Error] | None:
 
 
 def detect_called_func_bind(node: ast.Call) -> list[Error] | None:
-    if (
-        isinstance(node.func, ast.Attribute)
-        and isinstance(node.func.value, ast.Name)
-        and node.func.attr in BIND_METHODS
-        and len(node.args) >= 2
-    ):
-        func = node.args[1]
+    if node.func.attr != "tag_bind" and len(node.args) >= (2 if node.func.attr != "bind_class" else 3):
+        func = node.args[1 if node.func.attr != "bind_class" else 2]
         if isinstance(func, ast.Call):
             msg = ""
 
@@ -94,8 +89,10 @@ def detect_called_func_bind(node: ast.Call) -> list[Error] | None:
 
 
 def detect_multiple_mainloop_calls(node: ast.Call) -> list[Error] | None:
-    if (isinstance(node.func, ast.Name) and node.func.id == "mainloop") or (
-        isinstance(node.func, ast.Attribute) and node.func.attr == "mainloop"
+    if (
+        isinstance(node.func, ast.Attribute)
+        and node.func.attr == "mainloop"
+        and not (node.args or node.keywords)
     ):
         if Settings.mainloop_already_called:
             return [Error(node.lineno, node.col_offset, TK102)]
@@ -104,19 +101,19 @@ def detect_multiple_mainloop_calls(node: ast.Call) -> list[Error] | None:
 
 
 def detect_bind_add_missing(node: ast.Call) -> list[Error] | None:
-    if isinstance(node.func, ast.Attribute) and node.func.attr in BIND_METHODS:
-        if len(node.args) >= (3 if node.func.attr == "bind_class" else 2) and "add" not in {
-            keyword.arg for keyword in node.keywords
-        }:
-            return [Error(node.lineno, node.col_offset, TK231.format(bind_method=node.func.attr))]
+    if (
+        node.func.attr != "tag_bind"
+        and len(node.args) >= (2 if node.func.attr != "bind_class" else 3)
+        and "add" not in {keyword.arg for keyword in node.keywords}
+    ):
+        return [Error(node.lineno, node.col_offset, TK231.format(bind_method=node.func.attr))]
 
 
 def detect_bind_add_is_not_boolean(node: ast.Call) -> list[Error] | None:
-    if isinstance(node.func, ast.Attribute) and node.func.attr in BIND_METHODS | {"tag_bind"}:
-        for keyword in node.keywords:
-            if (
-                keyword.arg == "add"
-                and isinstance(keyword.value, ast.Constant)
-                and not isinstance(keyword.value.value, bool)
-            ):
-                return [Error(keyword.lineno, keyword.col_offset, TK304)]
+    for keyword in node.keywords:
+        if (
+            keyword.arg == "add"
+            and isinstance(keyword.value, ast.Constant)
+            and not isinstance(keyword.value.value, bool)
+        ):
+            return [Error(keyword.lineno, keyword.col_offset, TK304)]

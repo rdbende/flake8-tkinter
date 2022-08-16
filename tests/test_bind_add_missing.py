@@ -4,7 +4,7 @@ from flake8_tkinter.constants import BIND_METHODS
 
 
 def test_bind_add_true():
-    for method in BIND_METHODS:
+    for method in BIND_METHODS - {"tag_bind"}:
         if method == "bind_class":
             code = f"widget.{method}('Button', '<Button-1>', foo, add=True)"
         else:
@@ -13,7 +13,7 @@ def test_bind_add_true():
 
 
 def test_bind_add_false():
-    for method in BIND_METHODS:
+    for method in BIND_METHODS - {"tag_bind"}:
         if method == "bind_class":
             code = f"widget.{method}('Button', '<Button-1>', foo, add=False)"
         else:
@@ -22,7 +22,7 @@ def test_bind_add_false():
 
 
 def test_bind_add_missing():
-    for method in BIND_METHODS:
+    for method in BIND_METHODS - {"tag_bind"}:
         if method == "bind_class":
             code = f"widget.{method}('Button', '<Button-1>', foo)"
         else:
@@ -31,7 +31,7 @@ def test_bind_add_missing():
 
 
 def test_bind_method_without_handler_passed():
-    for method in BIND_METHODS:
+    for method in BIND_METHODS - {"tag_bind"}:
         if method == "bind_class":
             code = f"widget.{method}('Button', '<Button-1>')"
         else:
