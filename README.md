@@ -27,10 +27,13 @@ Best practices
 - **`TK221`**: Using tkinter.TRUE, tkinter.FALSE, etc. is pointless. Use an appropriate Python boolean instead. ([example](#tk221))
 - **`TK231`**: Using bind without `add=True` will overwrite any existing bindings to this sequence on this widget. Either overwrite them explicitly with `add=False` or use `add=True` to keep existing bindings. ([example](#tk231))
 - **`TK232`**: Creating tag bindings in a loop can lead to memory leaks. Store the returned command names in a list to clean them up later. ([example](#tk232))
-- **`TK251`**: Using `tkinter.Message` widget. It's redundant since `tkinter.Label` provides the same functionality.
+- **`TK251`**: Using `tkinter.Message` widget. It's redundant since `tkinter.Label` provides the same functionality.. ([example](#tk251)
+
+Code quality
+- **`TK304`**: Value for `add` in bind methods should be a boolean. ([example](#tk304))
 
 Opinionated warnings
-- **`TK304`**: Value for `add` should be a boolean. ([example](#tk304))
+- **`TK504`**: Using a tkinter constant. Use a string literal instead (disabled by default). ([example](#tk504))
 
 ## Examples
 
@@ -176,6 +179,15 @@ w.bind("<Button-1>", foo, add="+")
 w.bind("<Button-1>", foo, add=True)
 ```
 
+### TK504
+```python
+# Bad
+w.pack(side=tkinter.BOTTOM, fill=tkinter.BOTH)
+
+# Good
+w.pack(side="bottom", fill="both")
+```
+
 ## Planned warnings
 
 - Common mistakes (TK101-TK179)
@@ -207,7 +219,6 @@ w.bind("<Button-1>", foo, add=True)
     - `TK501`: Calling `mainloop()` on something other than the root window.
     - `TK502`: Using things like `root.wm_title()`. Use `root.title()`. (But there should be exceptions, like `wm_attributes`)
     - `TK503`: Using subscripting for widget cget and configure. Use `.cget()` and `.configure()` instead.
-    - `TK504`: Using a tkinter constant. Use a string literal instead (should disabled by default)    
 
 
 ## Development
