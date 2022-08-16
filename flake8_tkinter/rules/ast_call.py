@@ -37,7 +37,8 @@ TK231 = (
     "TK231 "
     "Using {bind_method} without `add=True` will overwrite any existing bindings "
     "to this sequence on this widget. Either overwrite them explicitly "
-    "with `add=False` or use `add=True` to keep existing bindings."
+    "with `add=False` or use `add=True` to keep existing bindings. "
+    "WARNING: This rule will be renamed to TK141 in v1.0.0!"
 )
 TK304 = "TK304 Value for `add` should be a boolean."
 
