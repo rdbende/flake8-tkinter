@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import ast
 
-from flake8_tkinter.utils import Error, is_call_attr, is_func
+from flake8_tkinter.utils import Error, is_attr_call, is_func
 
 TK232 = (
     "TK232 "
@@ -16,7 +16,7 @@ def detect_tag_bind_in_loop_badly(node: ast.For | ast.While) -> list[Error] | No
     appended = False
     tag_bind_pos = (0, 0)
 
-    elems = [el for el in node.body if isinstance(el, (ast.Assign, ast.Expr)) and is_call_attr(el)]
+    elems = [el for el in node.body if isinstance(el, (ast.Assign, ast.Expr)) and is_attr_call(el)]
 
     for expr in elems:
         if is_func(expr, "tag_bind"):
