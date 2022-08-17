@@ -204,6 +204,7 @@ w.pack(side="bottom", fill="both")
 - Best practices (TK201-TK299)
     - `TK222`: Using `tk.N+tk.S+tk.E+tk.W` and combinations like that. Use `tk.NSEW`, or some other constant instead.
     - `TK241`: Creating a widget without parent specified, and there is a container in the same scope.
+    - `TK252`: Using `tkinter.Menu` without `tearoff=False`
     - `TK261`: Using subsequent `wm_attributes` calls. It can take value pairs.
 
 - Code quality (TK301-TK399)
@@ -217,7 +218,7 @@ w.pack(side="bottom", fill="both")
     
 - Opinionated rules (TK501-TK599)
     - `TK501`: Calling `mainloop()` on something other than the root window.
-    - `TK502`: Using things like `root.wm_title()`. Use `root.title()`. (But there should be exceptions, like `wm_attributes`)
+    - `TK502`: Using things like `root.wm_title()`. Use `root.title()`. (But there should be exceptions, like `wm_attributes`, and instead warn on `attributes`)
     - `TK503`: Using subscripting for widget cget and configure. Use `.cget()` and `.configure()` instead.
 
 
