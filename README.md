@@ -1,6 +1,6 @@
 # flake8-tkinter
 
-A flake8 plugin that helps you detect (too) common mistakes and bad practices in you Tkinter project
+A flake8 plugin that helps you detect (too) common mistakes and bad practices in your Tkinter project
 
 _Project idea by [@insolor](https://github.com/insolor)_
 
@@ -27,7 +27,7 @@ Best practices
 - **`TK221`**: Using tkinter.TRUE, tkinter.FALSE, etc. is pointless. Use an appropriate Python boolean instead. ([example](#tk221))
 - **`TK231`**: Using bind without `add=True` will overwrite any existing bindings to this sequence on this widget. Either overwrite them explicitly with `add=False` or use `add=True` to keep existing bindings. ([example](#tk231))
 - **`TK232`**: Creating tag bindings in a loop can lead to memory leaks. Store the returned command names in a list to clean them up later. ([example](#tk232))
-- **`TK251`**: Using `tkinter.Message` widget. It's redundant since `tkinter.Label` provides the same functionality.. ([example](#tk251)
+- **`TK251`**: Using `tkinter.Message` widget. It's redundant since `tkinter.Label` provides the same functionality. ([example](#tk251))
 
 Code quality
 - **`TK304`**: Value for `add` in bind methods should be a boolean. ([example](#tk304))
