@@ -197,9 +197,12 @@ w.pack(side="bottom", fill="both")
     - `TK121`: Using `time.sleep()` in tkinter code. Use `.after()` in some form instead.
     - `TK122`: Using an infinite loop in callback handler. Propose to use recursive function with `.after()`.
     - `TK141`: Suggest keeping reference of local `PhotoImage` instance to avoid GC.
+    - `TK151`: Don't use `w.setup()` directly. Use init args, or `w.configure()`.
 
 - Cross platform (TK181-TK199)
     - `TK181`: Using `<Shift-Tab>` binding. It doesn't work on Linux.
+    - `TK182`: Don't calling `wait_visibility` before `wm_attributes("-alpha").
+    - `TK183`: Using `w.state("zoomed")`. It throws an error on Linux (and on mac too?). Use `wm_attributes("-zoomed", True)`
 
 - Best practices (TK201-TK299)
     - `TK222`: Using `tk.N+tk.S+tk.E+tk.W` and combinations like that. Use `tk.NSEW`, or some other constant instead.
