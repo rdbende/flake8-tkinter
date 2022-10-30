@@ -1,6 +1,6 @@
 # flake8-tkinter
 
-A flake8 plugin that helps you detect (too) common mistakes and bad practices in your Tkinter project
+A [flake8](https://github.com/PyCQA/flake8) plugin that helps you write better Tkinter code
 
 _Project idea by [@insolor](https://github.com/insolor)_
 
@@ -193,7 +193,7 @@ w.pack(side="bottom", fill="both")
 - Common mistakes (TK101-TK179)
     - `TK101`: Using multiple `tkinter.Tk` instances. Child windows must be created from `tkinter.Toplevel`.
     - `TK103`: Suggest refactoring code that uses `.update()`, as it's usually pointless, [potentially harmful](https://wiki.tcl-lang.org/page/Update+considered+harmful), and considered a code smell.
-    - `TK113`: Callback handler should be a callable ([lol](https://www.reddit.com/r/Tkinter/comments/w84lt0/does_tkinter_button_command_only_accept_functions))
+    - `TK113`: Callback handler should be a callable
     - `TK121`: Using `time.sleep()` in tkinter code. Use `.after()` in some form instead.
     - `TK122`: Using an infinite loop in callback handler. Propose to use recursive function with `.after()`.
     - `TK141`: Suggest keeping reference of local `PhotoImage` instance to avoid GC.
@@ -201,7 +201,7 @@ w.pack(side="bottom", fill="both")
 
 - Cross platform (TK181-TK199)
     - `TK181`: Using `<Shift-Tab>` binding. It doesn't work on Linux.
-    - `TK182`: Don't calling `wait_visibility` before `wm_attributes("-alpha").
+    - `TK182`: Don't calling `wait_visibility` before `wm_attributes("-alpha")`.
     - `TK183`: Using `w.state("zoomed")`. It throws an error on Linux (and on mac too?). Use `wm_attributes("-zoomed", True)`
 
 - Best practices (TK201-TK299)
@@ -221,7 +221,7 @@ w.pack(side="bottom", fill="both")
     
 - Opinionated rules (TK501-TK599)
     - `TK501`: Calling `mainloop()` on something other than the root window.
-    - `TK502`: Using things like `root.wm_title()`. Use `root.title()`. (But there should be exceptions, like `wm_attributes`, and instead warn on `attributes`)
+    - `TK502`: Using things like `root.wm_title()`. Use `root.title()`. (But there should be exceptions, like `wm_attributes`, and instead warn on plain `attributes`)
     - `TK503`: Using subscripting for widget cget and configure. Use `.cget()` and `.configure()` instead.
 
 

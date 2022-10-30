@@ -1,6 +1,6 @@
 from setuptools import setup
-from flake8_tkinter import __version__
 
+from flake8_tkinter import __version__
 
 with open("README.md", "r") as file:
     long_description = file.read()
@@ -12,7 +12,7 @@ flake8_entry_point = "TK = flake8_tkinter:Plugin"
 setup(
     name="flake8_tkinter",
     version=__version__,
-    description="Flake8 plugin to detect (too) common mistakes and bad practices in Tkinter projects",
+    description="A flake8 plugin that helps you write better Tkinter code",
     author="rdbende",
     author_email="rdbende@gmail.com",
     url="https://github.com/rdbende/flake8-tkinter",
