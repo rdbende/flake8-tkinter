@@ -1,6 +1,6 @@
 # flake8-tkinter
 
-A flake8 plugin that helps you detect (too) common mistakes and bad practices in you Tkinter project
+A flake8 plugin that helps you detect (too) common mistakes and bad practices in your Tkinter project
 
 _Project idea by [@insolor](https://github.com/insolor)_
 
@@ -27,7 +27,7 @@ Best practices
 - **`TK221`**: Using tkinter.TRUE, tkinter.FALSE, etc. is pointless. Use an appropriate Python boolean instead. ([example](#tk221))
 - **`TK231`**: Using bind without `add=True` will overwrite any existing bindings to this sequence on this widget. Either overwrite them explicitly with `add=False` or use `add=True` to keep existing bindings. ([example](#tk231))
 - **`TK232`**: Creating tag bindings in a loop can lead to memory leaks. Store the returned command names in a list to clean them up later. ([example](#tk232))
-- **`TK251`**: Using `tkinter.Message` widget. It's redundant since `tkinter.Label` provides the same functionality.. ([example](#tk251)
+- **`TK251`**: Using `tkinter.Message` widget. It's redundant since `tkinter.Label` provides the same functionality. ([example](#tk251))
 
 Code quality
 - **`TK304`**: Value for `add` in bind methods should be a boolean. ([example](#tk304))
@@ -197,13 +197,17 @@ w.pack(side="bottom", fill="both")
     - `TK121`: Using `time.sleep()` in tkinter code. Use `.after()` in some form instead.
     - `TK122`: Using an infinite loop in callback handler. Propose to use recursive function with `.after()`.
     - `TK141`: Suggest keeping reference of local `PhotoImage` instance to avoid GC.
+    - `TK151`: Don't use `w.setup()` directly. Use init args, or `w.configure()`.
 
 - Cross platform (TK181-TK199)
     - `TK181`: Using `<Shift-Tab>` binding. It doesn't work on Linux.
+    - `TK182`: Don't calling `wait_visibility` before `wm_attributes("-alpha").
+    - `TK183`: Using `w.state("zoomed")`. It throws an error on Linux (and on mac too?). Use `wm_attributes("-zoomed", True)`
 
 - Best practices (TK201-TK299)
     - `TK222`: Using `tk.N+tk.S+tk.E+tk.W` and combinations like that. Use `tk.NSEW`, or some other constant instead.
     - `TK241`: Creating a widget without parent specified, and there is a container in the same scope.
+    - `TK252`: Using `tkinter.Menu` without `tearoff=False`
     - `TK261`: Using subsequent `wm_attributes` calls. It can take value pairs.
 
 - Code quality (TK301-TK399)
@@ -217,7 +221,7 @@ w.pack(side="bottom", fill="both")
     
 - Opinionated rules (TK501-TK599)
     - `TK501`: Calling `mainloop()` on something other than the root window.
-    - `TK502`: Using things like `root.wm_title()`. Use `root.title()`. (But there should be exceptions, like `wm_attributes`)
+    - `TK502`: Using things like `root.wm_title()`. Use `root.title()`. (But there should be exceptions, like `wm_attributes`, and instead warn on `attributes`)
     - `TK503`: Using subscripting for widget cget and configure. Use `.cget()` and `.configure()` instead.
 
 
