@@ -201,7 +201,7 @@ w.pack(side="bottom", fill="both")
 
 - Cross platform (TK181-TK199)
     - `TK181`: Using `<Shift-Tab>` binding. It doesn't work on Linux.
-    - `TK182`: Don't calling `wait_visibility` before `wm_attributes("-alpha")`.
+    - `TK182`: Not calling `wait_visibility` before `wm_attributes("-alpha")`.
     - `TK183`: Using `w.state("zoomed")`. It throws an error on Linux (and on mac too?). Use `wm_attributes("-zoomed", True)`
 
 - Best practices (TK201-TK299)
