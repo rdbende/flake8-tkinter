@@ -200,9 +200,12 @@ w.pack(side="bottom", fill="both")
     - `TK151`: Don't use `w.setup()` directly. Use init args, or `w.configure()`.
 
 - Cross platform (TK181-TK199)
-    - `TK181`: Using `<Shift-Tab>` binding. It doesn't work on Linux.
-    - `TK182`: Not calling `wait_visibility` before `wm_attributes("-alpha")`.
-    - `TK183`: Using `w.state("zoomed")`. It throws an error on Linux (and on mac too?). Use `wm_attributes("-zoomed", True)`
+    - `TK181`: Using `<MouseWheel>` binding. It doesn't work on Linux with Tk 8.6 (use button4-5 instead)
+    - `TK182`: Using `<Shift-Tab>` binding. It doesn't work on Linux (use `<ISO_Left_Tab>` instead)
+    - `TK183`: Using `<Menu>` binding. It doesn't work on Windows (use `<App>` instead)
+    - `TK184`: Binding to control or alt with constant values. It probably won't work on macOS.
+    - `TK191`: Not calling `wait_visibility` before `wm_attributes("-alpha")`.
+    - `TK192`: Using `w.state("zoomed")`. It throws an error on Linux (and on mac too?). Use `wm_attributes("-zoomed", True)`
 
 - Best practices (TK201-TK299)
     - `TK222`: Using `tk.N+tk.S+tk.E+tk.W` and combinations like that. Use `tk.NSEW`, or some other constant instead.
