@@ -24,4 +24,5 @@ def detect_from_tkinter_import_star(node: ast.ImportFrom) -> list[Error] | None:
 
 def detect_from_tkinter_dot_ttk_import_star(node: ast.ImportFrom) -> list[Error] | None:
     if node.module == "tkinter.ttk" and node.names[0].name == "*":
+        print("error")
         return [Error(node.lineno, node.col_offset, TK202)]

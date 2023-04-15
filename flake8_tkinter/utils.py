@@ -12,18 +12,22 @@ class Error:
 
 
 @dataclass
-class _Settings:
+class _State:
     mainloop_already_called: bool = False
     tkinter_used: bool = False
     tkinter_as: str = ""
     ttk_as: str = ""
 
+    def reset(self):
+        for field in self.__dataclass_fields__.values():
+            setattr(self, field.name, field.default)
 
-Settings = _Settings()
+
+State = _State()
 
 
 def is_tkinter_namespace(thing: str) -> bool:
-    return thing in {Settings.tkinter_as, Settings.ttk_as}
+    return thing in {State.tkinter_as, State.ttk_as}
 
 
 def is_functools_partial(node: ast.Call) -> bool:

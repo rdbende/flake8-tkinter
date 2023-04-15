@@ -22,7 +22,7 @@ from flake8_tkinter.rules.ast_import_from import (
     detect_from_tkinter_import_star,
 )
 from flake8_tkinter.rules.ast_loop import detect_tag_bind_in_loop_badly
-from flake8_tkinter.utils import Error, Settings, get_ancestors
+from flake8_tkinter.utils import Error, State, get_ancestors
 
 
 class Visitor(ast.NodeVisitor):
@@ -62,22 +62,22 @@ class Visitor(ast.NodeVisitor):
     def visit_Import(self, node: ast.Import) -> None:
         for name in node.names:
             if name.name == "tkinter":
-                Settings.tkinter_used = True
-                Settings.tkinter_as = name.asname or name.name
+                State.tkinter_used = True
+                State.tkinter_as = name.asname or name.name
             elif name.name == "tkinter.ttk":
-                Settings.tkinter_used = True
-                Settings.ttk_as = name.asname or name.name
+                State.tkinter_used = True
+                State.ttk_as = name.asname or name.name
 
         self.extend(detect_import_tkinter_dot_ttk_as_ttk(node))
 
         self.generic_visit(node)
 
     def visit_ImportFrom(self, node: ast.ImportFrom) -> None:
-        if node.module == "tkinter":
-            Settings.tkinter_used = True
+        if node.module in ("tkinter", "tkinter.ttk"):
+            State.tkinter_used = True
             for name in node.names:
                 if name.name == "ttk":
-                    Settings.ttk_as = name.asname or name.name
+                    State.ttk_as = name.asname or name.name
 
         self.extend(detect_from_tkinter_dot_ttk_import_star(node))
         self.extend(detect_from_tkinter_import_star(node))
@@ -116,5 +116,5 @@ class Visitor(ast.NodeVisitor):
         self.generic_visit(node)
 
     def extend(self, error: list[Error] | None) -> None:
-        if Settings.tkinter_used and error:
+        if State.tkinter_used and error:
             self.errors += error

@@ -5,7 +5,7 @@ import ast
 from flake8_tkinter.constants import BIND_METHODS, COMMAND_ARGS, CONFIG_METHODS
 from flake8_tkinter.utils import (
     Error,
-    Settings,
+    State,
     get_func_name,
     is_functools_partial,
     is_if_name_equals_main,
@@ -37,8 +37,7 @@ TK231 = (
     "TK231 "
     "Using {bind_method} without `add=True` will overwrite any existing bindings "
     "to this sequence on this widget. Either overwrite them explicitly "
-    "with `add=False` or use `add=True` to keep existing bindings. "
-    "WARNING: This rule will be renamed to TK141 in v1.0.0!"
+    "with `add=False` or use `add=True` to keep existing bindings."
 )
 TK304 = "TK304 Value for `add` should be a boolean."
 
@@ -98,11 +97,13 @@ def detect_multiple_mainloop_calls(node: ast.Call) -> list[Error] | None:
         and node.func.attr == "mainloop"
         and not (node.args or node.keywords)
     ):
-        if Settings.mainloop_already_called:
-            if not hasattr(node.parent, "parent") or not is_if_name_equals_main(node.parent.parent):
+        print(State.mainloop_already_called)
+        if State.mainloop_already_called:
+            print(node.parent.parent)
+            if hasattr(node.parent, "parent") and not (isinstance(node.parent.parent, ast.If) and not is_if_name_equals_main(node.parent.parent)):
                 return [Error(node.lineno, node.col_offset, TK102)]
         else:
-            Settings.mainloop_already_called = True
+            State.mainloop_already_called = True
 
 
 def detect_bind_add_missing(node: ast.Call) -> list[Error] | None:

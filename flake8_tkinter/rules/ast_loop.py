@@ -7,8 +7,7 @@ from flake8_tkinter.utils import Error, is_attr_call, is_func
 TK232 = (
     "TK232 "
     "Creating tag bindings in a loop can lead to memory leaks. "
-    "Store the returned command names in a list to clean them up later. "
-    "WARNING: This rule will be renamed to TK142 in v1.0.0!"
+    "Store the returned command names in a list to clean them up later."
 )
 
 
