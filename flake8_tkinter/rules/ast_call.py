@@ -33,8 +33,8 @@ TK112_bind = (
     "Calling `{handler}()` with arguments instead of referencing it for bind. "
     "If you need to call `{handler}` with arguments, use lambda or functools.partial."
 )
-TK231 = (
-    "TK231 "
+TK141 = (
+    "TK141 "
     "Using {bind_method} without `add=True` will overwrite any existing bindings "
     "to this sequence on this widget. Either overwrite them explicitly "
     "with `add=False` or use `add=True` to keep existing bindings."
@@ -112,7 +112,7 @@ def detect_bind_add_missing(node: ast.Call) -> list[Error] | None:
         and len(node.args) >= (2 if node.func.attr != "bind_class" else 3)
         and "add" not in {keyword.arg for keyword in node.keywords}
     ):
-        return [Error(node.lineno, node.col_offset, TK231.format(bind_method=node.func.attr))]
+        return [Error(node.lineno, node.col_offset, TK141.format(bind_method=node.func.attr))]
 
 
 def detect_bind_add_is_not_boolean(node: ast.Call) -> list[Error] | None:

@@ -4,9 +4,9 @@ import ast
 
 from flake8_tkinter.utils import Error, is_attr_call, is_func
 
-TK232 = (
-    "TK232 "
-    "Creating tag bindings in a loop can lead to memory leaks. "
+TK142 = (
+    "TK142 "
+    "Creating bindings in a loop can lead to memory leaks. "
     "Store the returned command names in a list to clean them up later."
 )
 
@@ -30,4 +30,4 @@ def detect_tag_bind_in_loop_badly(node: ast.For | ast.While) -> list[Error] | No
             appended = isinstance(arg, ast.Name) and arg.id == variable
 
     if tag_bind and not appended:
-        return [Error(*tag_bind_pos, TK232)]
+        return [Error(*tag_bind_pos, TK142)]

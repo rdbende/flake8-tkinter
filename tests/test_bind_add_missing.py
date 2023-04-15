@@ -27,7 +27,7 @@ def test_bind_add_missing():
             code = f"widget.{method}('Button', '<Button-1>', foo)"
         else:
             code = f"widget.{method}('<Button-1>', foo)"
-        assert lint("import tkinter;" + code) == {f"1:16 TK231 Using {method} without `add=True` will overwrite any existing bindings to this sequence on this widget. Either overwrite them explicitly with `add=False` or use `add=True` to keep existing bindings."}
+        assert lint("import tkinter;" + code) == {f"1:16 TK141 Using {method} without `add=True` will overwrite any existing bindings to this sequence on this widget. Either overwrite them explicitly with `add=False` or use `add=True` to keep existing bindings."}
 
 
 def test_bind_method_without_handler_passed():
