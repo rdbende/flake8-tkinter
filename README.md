@@ -21,12 +21,12 @@ Common mistakes
 - **`TK131`**: Assigning result of geometry manager call to a variable. ([example](#tk131))
 
 Best practices
+- **`TK141`**: Using bind without `add=True` will overwrite any existing bindings to this sequence on this widget. Either overwrite them explicitly with `add=False` or use `add=True` to keep existing bindings. ([example](#tk141))
+- **`TK142`**: Creating tag bindings in a loop can lead to memory leaks. Store the returned command names in a list to clean them up later. ([example](#tk142))
 - **`TK201`**: Using `from tkinter import *` is generally a bad practice and discouraged. Use `import tkinter as tk` or simply `import tkinter` instead. ([example](#tk201))
 - **`TK202`**: Using `from tkinter.ttk import *` is generally a bad practice and discouraged. Use `from tkinter import ttk` instead. ([example](#tk202))
 - **`TK211`**: Using `import tkinter.ttk as ttk` is pointless. Use `from tkinter import ttk` instead. ([example](#tk211))
 - **`TK221`**: Using tkinter.TRUE, tkinter.FALSE, etc. is pointless. Use an appropriate Python boolean instead. ([example](#tk221))
-- **`TK231`**: Using bind without `add=True` will overwrite any existing bindings to this sequence on this widget. Either overwrite them explicitly with `add=False` or use `add=True` to keep existing bindings. ([example](#tk231))
-- **`TK232`**: Creating tag bindings in a loop can lead to memory leaks. Store the returned command names in a list to clean them up later. ([example](#tk232))
 - **`TK251`**: Using `tkinter.Message` widget. It's redundant since `tkinter.Label` provides the same functionality. ([example](#tk251))
 
 Code quality
@@ -135,8 +135,7 @@ w.pack(expand=True)
 w.pack(expand=False)
 ```
 
-### TK231
-_Will be renamed to TK141 in v1.0.0_
+### TK141
 ```python
 # Bad
 w.bind("<Button-1>", foo)
@@ -147,8 +146,7 @@ w.bind("<Button-1>", foo, add=True)
 w.bind("<Button-1>", foo, add=False)
 ```
 
-### TK232
-_Will be renamed to TK142 in v1.0.0_
+### TK142
 ```python
 # Bad
 for index, foo in enumerate(foos):
@@ -161,7 +159,7 @@ for index, foo in enumerate(foos):
 ```
 
 ### TK251
-_Yes, there's some minor diffrence in text wrapping difference, but that can be adjusted_
+_Yes, there's some minor diffrence in text wrapping, but that can be easily fixed
 ```python
 # Bad
 w = tkinter.Message()
