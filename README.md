@@ -194,8 +194,9 @@ w.pack(side="bottom", fill="both")
     - `TK113`: Callback handler should be a callable
     - `TK121`: Using `time.sleep()` in tkinter code. Use `.after()` in some form instead.
     - `TK122`: Using an infinite loop in callback handler. Propose to use recursive function with `.after()`.
-    - `TK141`: Suggest keeping reference of local `PhotoImage` instance to avoid GC.
+    - `TK???`: Suggest keeping reference of local `PhotoImage` instance to avoid GC.
     - `TK151`: Don't use `w.setup()` directly. Use init args, or `w.configure()`.
+    - Extend `TK111` and `Tk112` to check in `w.after()` calls.
 
 - Cross platform (TK181-TK199)
     - `TK181`: Using `<MouseWheel>` binding. It doesn't work on Linux with Tk 8.6 (use button4-5 instead)
