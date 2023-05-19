@@ -4,42 +4,13 @@ import ast
 
 from flake8_tkinter.constants import BIND_METHODS, COMMAND_ARGS, CONFIG_METHODS
 from flake8_tkinter.utils import (
-    Error,
     State,
     get_func_name,
     is_functools_partial,
     is_if_name_equals_main,
     is_tkinter_namespace,
 )
-
-TK102 = "TK102 Using multiple mainloop calls is unnecessary. One call is perfectly enough."
-TK111_command = (
-    "TK111 "
-    "Calling `{handler}()` instead of referencing it for `{argument}`. "
-    "Perhaps you meant `{argument}={handler}` (without the parentheses)?"
-)
-TK111_bind = (
-    "TK111 "
-    "Calling `{handler}()` instead of referencing it for bind. "
-    "Perhaps you meant `{handler}` (without the parentheses)?"
-)
-TK112_command = (
-    "TK112 "
-    "Calling `{handler}()` with arguments instead of referencing it for `{argument}`. "
-    "If you need to call `{handler}` with arguments, use lambda or functools.partial."
-)
-TK112_bind = (
-    "TK112 "
-    "Calling `{handler}()` with arguments instead of referencing it for bind. "
-    "If you need to call `{handler}` with arguments, use lambda or functools.partial."
-)
-TK141 = (
-    "TK141 "
-    "Using {bind_method} without `add=True` will overwrite any existing bindings "
-    "to this sequence on this widget. Either overwrite them explicitly "
-    "with `add=False` or use `add=True` to keep existing bindings."
-)
-TK304 = "TK304 Value for `add` should be a boolean."
+from flake8_tkinter.messages import Error
 
 
 def detect_called_func_command_arg(node: ast.Call) -> list[Error] | None:
@@ -51,55 +22,57 @@ def detect_called_func_command_arg(node: ast.Call) -> list[Error] | None:
         for keyword in node.keywords:
             func = keyword.value
             if isinstance(func, ast.Call) and keyword.arg in COMMAND_ARGS:
-                msg = None
+                msg_id = 0
 
                 if not (func.args or func.keywords):
-                    msg = TK111_command
+                    msg_id = 111
                 elif not is_functools_partial(func):
-                    msg = TK112_command
+                    msg_id = 112
 
-                if msg:
+                if msg_id:
                     return [
                         Error(
+                            msg_id,
                             keyword.value.lineno,
                             keyword.value.col_offset,
-                            msg.format(handler=get_func_name(func), argument=keyword.arg),
+                            handler=get_func_name(func),
+                            argument=keyword.arg,
+                            meant=f"{keyword.arg}={get_func_name(func)}",
                         )
                     ]
 
 
 def detect_called_func_bind(node: ast.Call) -> list[Error] | None:
-    if node.func.attr != "tag_bind" and len(node.args) >= (
-        2 if node.func.attr != "bind_class" else 3
-    ):
+    if node.func.attr != "tag_bind" and len(node.args) >= (2 if node.func.attr != "bind_class" else 3):
         func = node.args[1 if node.func.attr != "bind_class" else 2]
         if isinstance(func, ast.Call):
-            msg = None
+            msg_id = 0
 
             if not (func.args or func.keywords):
-                msg = TK111_bind
+                msg_id = 111
             elif not is_functools_partial(func):
-                msg = TK112_bind
+                msg_id = 112
 
-            if msg:
+            if msg_id:
                 return [
                     Error(
+                        msg_id,
                         func.func.lineno,
                         func.func.col_offset,
-                        msg.format(handler=get_func_name(func)),
+                        handler=get_func_name(func),
+                        argument="bind",
+                        meant=get_func_name(func),
                     )
                 ]
 
 
 def detect_multiple_mainloop_calls(node: ast.Call) -> list[Error] | None:
-    if (
-        isinstance(node.func, ast.Attribute)
-        and node.func.attr == "mainloop"
-        and not (node.args or node.keywords)
-    ):
+    if isinstance(node.func, ast.Attribute) and node.func.attr == "mainloop" and not (node.args or node.keywords):
         if State.mainloop_already_called:
-            if hasattr(node.parent, "parent") and not (isinstance(node.parent.parent, ast.If) and not is_if_name_equals_main(node.parent.parent)):
-                return [Error(node.lineno, node.col_offset, TK102)]
+            if hasattr(node.parent, "parent") and not (
+                isinstance(node.parent.parent, ast.If) and not is_if_name_equals_main(node.parent.parent)
+            ):
+                return [Error(102, node.lineno, node.col_offset)]
         else:
             State.mainloop_already_called = True
 
@@ -110,7 +83,7 @@ def detect_bind_add_missing(node: ast.Call) -> list[Error] | None:
         and len(node.args) >= (2 if node.func.attr != "bind_class" else 3)
         and "add" not in {keyword.arg for keyword in node.keywords}
     ):
-        return [Error(node.lineno, node.col_offset, TK141.format(bind_method=node.func.attr))]
+        return [Error(141, node.lineno, node.col_offset, bind_method=node.func.attr)]
 
 
 def detect_bind_add_is_not_boolean(node: ast.Call) -> list[Error] | None:
@@ -120,4 +93,4 @@ def detect_bind_add_is_not_boolean(node: ast.Call) -> list[Error] | None:
             and isinstance(keyword.value, ast.Constant)
             and not isinstance(keyword.value.value, bool)
         ):
-            return [Error(keyword.lineno, keyword.col_offset, TK304)]
+            return [Error(304, keyword.lineno, keyword.col_offset)]

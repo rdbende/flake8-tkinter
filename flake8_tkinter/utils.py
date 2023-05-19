@@ -5,13 +5,6 @@ from dataclasses import dataclass
 
 
 @dataclass
-class Error:
-    line: int
-    col: int
-    msg: str
-
-
-@dataclass
 class _State:
     mainloop_already_called: bool = False
     tkinter_used: bool = False

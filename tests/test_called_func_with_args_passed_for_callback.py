@@ -25,5 +25,5 @@ def test_command_arg_function_call_with_args_in_config():
 def test_bind_function_call_with_args():
     code = "import tkinter;w.bind('<Button-1>', foo(bar, baz), add=True)"
     assert lint(code) == {
-        "1:37 TK112 Calling `foo()` with arguments instead of referencing it for bind. If you need to call `foo` with arguments, use lambda or functools.partial."
+        "1:37 TK112 Calling `foo()` with arguments instead of referencing it for `bind`. If you need to call `foo` with arguments, use lambda or functools.partial."
     }

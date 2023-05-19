@@ -25,5 +25,5 @@ def test_command_arg_function_call_in_config():
 def test_bind_function_call():
     code = "import tkinter;w.bind('<Button-1>', foo(), add=True)"
     assert lint(code) == {
-        "1:37 TK111 Calling `foo()` instead of referencing it for bind. Perhaps you meant `foo` (without the parentheses)?"
+        "1:37 TK111 Calling `foo()` instead of referencing it for `bind`. Perhaps you meant `foo` (without the parentheses)?"
     }

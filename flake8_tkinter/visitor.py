@@ -22,7 +22,8 @@ from flake8_tkinter.rules.ast_import_from import (
     detect_from_tkinter_import_star,
 )
 from flake8_tkinter.rules.ast_loop import detect_tag_bind_in_loop_badly
-from flake8_tkinter.utils import Error, State, get_ancestors
+from flake8_tkinter.utils import State, get_ancestors
+from flake8_tkinter.messages import Error
 
 
 class Visitor(ast.NodeVisitor):
@@ -114,6 +115,7 @@ class Visitor(ast.NodeVisitor):
         self.extend(detect_bind_add_is_not_boolean(node))
         self.extend(detect_bind_add_missing(node))
         self.extend(detect_called_func_bind(node))
+
     def extend(self, error: list[Error] | None) -> None:
         if State.tkinter_used and error:
             self.errors += error
