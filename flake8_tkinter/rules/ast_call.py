@@ -60,7 +60,7 @@ def detect_called_func_bind(node: ast.Call) -> list[Error] | None:
                         func.func.lineno,
                         func.func.col_offset,
                         handler=get_func_name(func),
-                        argument="bind",
+                        argument="bind()",
                         meant=get_func_name(func),
                     )
                 ]
