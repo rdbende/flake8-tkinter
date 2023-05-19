@@ -97,9 +97,7 @@ def detect_multiple_mainloop_calls(node: ast.Call) -> list[Error] | None:
         and node.func.attr == "mainloop"
         and not (node.args or node.keywords)
     ):
-        print(State.mainloop_already_called)
         if State.mainloop_already_called:
-            print(node.parent.parent)
             if hasattr(node.parent, "parent") and not (isinstance(node.parent.parent, ast.If) and not is_if_name_equals_main(node.parent.parent)):
                 return [Error(node.lineno, node.col_offset, TK102)]
         else:

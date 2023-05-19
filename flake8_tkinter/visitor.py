@@ -41,11 +41,6 @@ class Visitor(ast.NodeVisitor):
 
         self.generic_visit(node)
 
-    def visit_BindMethod(self, node: ast.Call) -> None:
-        self.extend(detect_bind_add_is_not_boolean(node))
-        self.extend(detect_bind_add_missing(node))
-        self.extend(detect_called_func_bind(node))
-
     def visit_Call(self, node: ast.Call) -> None:
         self.extend(detect_called_func_command_arg(node))
         self.extend(detect_multiple_mainloop_calls(node))
@@ -55,7 +50,7 @@ class Visitor(ast.NodeVisitor):
             and isinstance(node.func.value, ast.Name)  # TODO: can it be something else?
             and node.func.attr in BIND_METHODS | {"tag_bind"}
         ):
-            self.visit_BindMethod(node)
+            self.visit_tkinter_bind_method(node)
 
         self.generic_visit(node)
 
@@ -115,6 +110,10 @@ class Visitor(ast.NodeVisitor):
 
         self.generic_visit(node)
 
+    def visit_tkinter_bind_method(self, node: ast.Call) -> None:
+        self.extend(detect_bind_add_is_not_boolean(node))
+        self.extend(detect_bind_add_missing(node))
+        self.extend(detect_called_func_bind(node))
     def extend(self, error: list[Error] | None) -> None:
         if State.tkinter_used and error:
             self.errors += error
