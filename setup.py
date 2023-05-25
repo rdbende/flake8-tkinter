@@ -16,6 +16,9 @@ setup(
     author="rdbende",
     author_email="rdbende@gmail.com",
     url="https://github.com/rdbende/flake8-tkinter",
+    project_urls={
+        "Tracker": "https://github.com/rdbende/flake8-tkinter/issues",
+    },
     long_description=long_description,
     long_description_content_type="text/markdown",
     python_requires=">=3.7",
@@ -33,6 +36,7 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Software Development :: Quality Assurance",
     ],
