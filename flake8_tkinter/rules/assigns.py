@@ -2,10 +2,9 @@ from __future__ import annotations
 
 import ast
 
+from flake8_tkinter.api import is_attr_call, is_tkinter_namespace, register
 from flake8_tkinter.constants import GM_METHODS
 from flake8_tkinter.messages import Error
-from flake8_tkinter.utils import is_attr_call, is_tkinter_namespace
-from flake8_tkinter.visitor import register
 
 
 @register(ast.Assign)

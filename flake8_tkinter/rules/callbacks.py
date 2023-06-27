@@ -2,9 +2,7 @@ from __future__ import annotations
 
 import ast
 
-from flake8_tkinter.constants import BIND_METHODS, COMMAND_ARGS, CONFIG_METHODS
-from flake8_tkinter.messages import Error
-from flake8_tkinter.utils import (
+from flake8_tkinter.api import (
     State,
     get_ancestors,
     get_func_name,
@@ -13,8 +11,10 @@ from flake8_tkinter.utils import (
     is_functools_partial,
     is_if_name_equals_main,
     is_tkinter_namespace,
+    register,
 )
-from flake8_tkinter.visitor import register
+from flake8_tkinter.constants import BIND_METHODS, COMMAND_ARGS, CONFIG_METHODS
+from flake8_tkinter.messages import Error
 
 
 @register(ast.Call)

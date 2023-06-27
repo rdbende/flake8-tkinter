@@ -1,7 +1,53 @@
 from __future__ import annotations
 
 import ast
+from collections import defaultdict
 from dataclasses import dataclass
+from functools import wraps
+from typing import Callable, TypeVar
+
+from flake8_tkinter.messages import Error
+
+T = TypeVar("T")
+
+
+class Visitor(ast.NodeVisitor):
+    def __init__(self) -> None:
+        self.errors: list[Error] = []
+
+
+_registered_rules = defaultdict(list)
+
+
+def visitor_method(visitor: ast.NodeVisitor, node: ast.AST) -> None:
+    for func in _registered_rules[type(node)]:
+        error = func(node)
+        if error and State.tkinter_used:
+            visitor.errors += error
+
+    visitor.generic_visit(node)
+
+
+def register(ast_node_type: T, important: bool = False) -> Callable[[T], list[Error] | None]:
+    def decorator(func: T) -> Callable[[T], list[Error] | None]:
+        @wraps(func)
+        def wrapper(node: T) -> list[Error] | None:
+            try:
+                return func(node)
+            except AssertionError:
+                return None
+
+        if important:
+            _registered_rules[ast_node_type].insert(0, wrapper)
+        else:
+            _registered_rules[ast_node_type].append(wrapper)
+
+        if not hasattr(Visitor, f"visit_{ast_node_type.__name__}"):
+            setattr(Visitor, f"visit_{ast_node_type.__name__}", visitor_method)
+
+        return wrapper
+
+    return decorator
 
 
 @dataclass
@@ -18,6 +64,12 @@ class _State:
 
 
 State = _State()
+
+
+def generate_ancestry(tree: ast.AST) -> None:
+    for node in ast.walk(tree):
+        for child in ast.iter_child_nodes(node):
+            child.parent = node
 
 
 def is_tkinter_namespace(thing: str) -> bool:
@@ -63,7 +115,7 @@ def is_if_name_equals_main(node: ast.If) -> bool:
         and node.test.left.id == "__name__"
         and isinstance(node.test.comparators[0], ast.Constant)
         and node.test.comparators[0].value == "__main__"
-    )  # doesn't check the '==', but it's good enough
+    )
 
 
 def get_ancestors(node: ast.AST) -> list[type[ast.AST]]:

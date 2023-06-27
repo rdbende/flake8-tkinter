@@ -2,9 +2,8 @@ from __future__ import annotations
 
 import ast
 
+from flake8_tkinter.api import State, register
 from flake8_tkinter.messages import Error
-from flake8_tkinter.utils import State
-from flake8_tkinter.visitor import register
 
 
 @register(ast.Import)

@@ -17,7 +17,7 @@ messages = {
 
 
 class Error:
-    def __init__(self, id: int, line: int, col: int, **kwargs):
+    def __init__(self, id: int, line: int, col: int, **kwargs) -> None:
         self.line = line
         self.col = col
         self.msg = f"TK{id} {messages[id].format(**kwargs)}"

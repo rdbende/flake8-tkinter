@@ -1,4 +1,5 @@
 from base import lint
+
 from flake8_tkinter.constants import DUMB_CONSTANTS
 
 

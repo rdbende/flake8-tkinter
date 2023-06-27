@@ -3,10 +3,9 @@ from __future__ import annotations
 import ast
 from tkinter import constants
 
+from flake8_tkinter.api import State, register
 from flake8_tkinter.constants import DUMB_CONSTANTS
 from flake8_tkinter.messages import Error
-from flake8_tkinter.utils import State
-from flake8_tkinter.visitor import register
 
 TKINTER_CONSTANTS = {x for x in dir(constants) if x.isupper()}
 

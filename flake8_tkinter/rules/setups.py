@@ -2,8 +2,7 @@ from __future__ import annotations
 
 import ast
 
-from flake8_tkinter.utils import State
-from flake8_tkinter.visitor import register
+from flake8_tkinter.api import State, register
 
 
 @register(ast.ImportFrom, True)
