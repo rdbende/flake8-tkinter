@@ -106,6 +106,7 @@ def is_if_name_equals_main(node: ast.If) -> bool:
         and node.test.comparators[0].value == "__main__"
     )
 
+
 def get_func_name(node: ast.Call) -> str:
     func = node.func
     if isinstance(func, ast.Name):
@@ -115,6 +116,7 @@ def get_func_name(node: ast.Call) -> str:
     elif isinstance(func, ast.Lambda):
         return "<lambda>"
     return "<function>"
+
 
 def get_ancestors(node: ast.AST) -> list[type[ast.AST]]:
     result = []
