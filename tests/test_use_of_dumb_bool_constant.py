@@ -1,9 +1,7 @@
-from base import lint
-
 from flake8_tkinter.constants import DUMB_CONSTANTS
 
 
-def test_dumb_boolean_constants():
+def test_dumb_boolean_constants(lint):
     for constant in DUMB_CONSTANTS:
         code = f"import tkinter\ntkinter.{constant}"
         assert lint(code) == {
