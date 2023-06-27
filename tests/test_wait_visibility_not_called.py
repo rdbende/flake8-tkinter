@@ -1,5 +1,3 @@
-from base import lint
-
 wm_attributes_calls = {
     "wm_attributes('-alpha')",
     "attributes('-alpha')",
@@ -10,13 +8,13 @@ wm_attributes_calls = {
 }
 
 
-def test_wait_visibility_called():
+def test_wait_visibility_called(lint):
     for attributes in wm_attributes_calls:
         code = f"import tkinter;w.wait_visibility();w.{attributes}"
         assert not lint(code)
 
 
-def test_wait_visibility_not_called():
+def test_wait_visibility_not_called(lint):
     for attributes in wm_attributes_calls:
         code = f"import tkinter;w.{attributes}"
         assert lint(code) == {

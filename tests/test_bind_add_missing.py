@@ -1,9 +1,7 @@
-from base import lint
-
 from flake8_tkinter.constants import BIND_METHODS
 
 
-def test_bind_add_true():
+def test_bind_add_true(lint):
     for method in BIND_METHODS - {"tag_bind"}:
         if method == "bind_class":
             code = f"widget.{method}('Button', '<Button-1>', foo, add=True)"
@@ -12,7 +10,7 @@ def test_bind_add_true():
         assert lint("import tkinter;" + code) == set()
 
 
-def test_bind_add_false():
+def test_bind_add_false(lint):
     for method in BIND_METHODS - {"tag_bind"}:
         if method == "bind_class":
             code = f"widget.{method}('Button', '<Button-1>', foo, add=False)"
@@ -21,7 +19,7 @@ def test_bind_add_false():
         assert lint("import tkinter;" + code) == set()
 
 
-def test_bind_add_missing():
+def test_bind_add_missing(lint):
     for method in BIND_METHODS - {"tag_bind"}:
         if method == "bind_class":
             code = f"widget.{method}('Button', '<Button-1>', foo)"
@@ -30,7 +28,7 @@ def test_bind_add_missing():
         assert lint("import tkinter;" + code) == {f"1:16 TK141 Using {method} without `add=True` will overwrite any existing bindings to this sequence on this widget. Either overwrite them explicitly with `add=False` or use `add=True` to keep existing bindings."}
 
 
-def test_bind_method_without_handler_passed():
+def test_bind_method_without_handler_passed(lint):
     for method in BIND_METHODS - {"tag_bind"}:
         if method == "bind_class":
             code = f"widget.{method}('Button', '<Button-1>')"
