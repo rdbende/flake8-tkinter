@@ -10,7 +10,6 @@ from flake8_tkinter.api import (
     is_from_tkinter,
     is_func,
     is_functools_partial,
-    is_if_name_equals_main,
     register,
 )
 from flake8_tkinter.constants import BIND_METHODS, COMMAND_ARGS, CONFIG_METHODS
@@ -72,22 +71,6 @@ def detect_called_func_bind(node: ast.Call) -> list[Error] | None:
                 meant=get_func_name(func),
             )
         ]
-
-
-@register(ast.Call)
-def detect_multiple_mainloop_calls(node: ast.Call) -> list[Error] | None:
-    if (
-        isinstance(node.func, ast.Attribute)
-        and node.func.attr == "mainloop"
-        and not (node.args or node.keywords)
-    ):
-        if State.mainloop_already_called:
-            if hasattr(node.parent, "parent") and not (
-                isinstance(node.parent.parent, ast.If) and not is_if_name_equals_main(node.parent.parent)
-            ):
-                return [Error(102, node.lineno, node.col_offset)]
-        else:
-            State.mainloop_already_called = True
 
 
 @register(ast.For)
