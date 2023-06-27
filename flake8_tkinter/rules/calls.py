@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import ast
+import sys
 
 from flake8_tkinter.constants import BIND_METHODS
 from flake8_tkinter.messages import Error
@@ -35,4 +36,7 @@ def detect_bind_add_is_not_boolean(node: ast.Call) -> list[Error] | None:
 
     for kw in node.keywords:
         if kw.arg == "add" and isinstance(kw.value, ast.Constant) and not isinstance(kw.value.value, bool):
-            return [Error(304, kw.lineno, kw.col_offset)]
+            if sys.version_info >= (3, 9):
+                return [Error(304, kw.lineno, kw.col_offset)]
+            else:
+                return [Error(304, node.lineno, node.col_offset)]
