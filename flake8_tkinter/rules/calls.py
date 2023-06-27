@@ -3,9 +3,25 @@ from __future__ import annotations
 import ast
 import sys
 
-from flake8_tkinter.api import State, is_if_name_equals_main, register
+from flake8_tkinter.api import State, is_if_name_equals_main, register, is_from_tkinter
 from flake8_tkinter.constants import BIND_METHODS
 from flake8_tkinter.messages import Error
+
+
+@register(ast.Call)
+def detect_multiple_mainloop_calls(node: ast.Call) -> list[Error] | None:
+    assert isinstance(node.func, ast.Attribute)
+    assert is_from_tkinter(node.func.value)
+    assert node.func.attr == "Tk"
+
+    if not State.root_window_already_exists:
+        State.root_window_already_exists = True
+        return
+
+    assert hasattr(node.parent, "parent")
+    assert not (isinstance(node.parent.parent, ast.If) and is_if_name_equals_main(node.parent.parent))
+
+    return [Error(101, node.lineno, node.col_offset)]
 
 
 @register(ast.Call)
