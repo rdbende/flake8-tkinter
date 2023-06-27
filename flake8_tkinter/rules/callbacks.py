@@ -7,10 +7,10 @@ from flake8_tkinter.api import (
     get_ancestors,
     get_func_name,
     is_attr_call,
+    is_from_tkinter,
     is_func,
     is_functools_partial,
     is_if_name_equals_main,
-    is_tkinter_namespace,
     register,
 )
 from flake8_tkinter.constants import BIND_METHODS, COMMAND_ARGS, CONFIG_METHODS
@@ -19,32 +19,31 @@ from flake8_tkinter.messages import Error
 
 @register(ast.Call)
 def detect_called_func_command_arg(node: ast.Call) -> list[Error] | None:
-    if (
-        isinstance(node.func, ast.Attribute)
-        and isinstance(node.func.value, ast.Name)
-        and (is_tkinter_namespace(node.func.value.id) or node.func.attr in CONFIG_METHODS)
-    ):
-        for keyword in node.keywords:
-            func = keyword.value
-            if isinstance(func, ast.Call) and keyword.arg in COMMAND_ARGS:
-                msg_id = 0
+    assert is_attr_call(node)
+    assert is_from_tkinter(node.func.value) or node.func.attr in CONFIG_METHODS
 
-                if not (func.args or func.keywords):
-                    msg_id = 111
-                elif not is_functools_partial(func):
-                    msg_id = 112
+    for keyword in node.keywords:
+        func = keyword.value
+        assert isinstance(func, ast.Call) and keyword.arg in COMMAND_ARGS
 
-                if msg_id:
-                    return [
-                        Error(
-                            msg_id,
-                            keyword.value.lineno,
-                            keyword.value.col_offset,
-                            handler=get_func_name(func),
-                            argument=keyword.arg,
-                            meant=f"{keyword.arg}={get_func_name(func)}",
-                        )
-                    ]
+        if not (func.args or func.keywords):
+            msg_id = 111
+        elif not is_functools_partial(func):
+            msg_id = 112
+        else:
+            msg_id = None
+
+        if msg_id:
+            return [
+                Error(
+                    msg_id,
+                    keyword.value.lineno,
+                    keyword.value.col_offset,
+                    handler=get_func_name(func),
+                    argument=keyword.arg,
+                    meant=f"{keyword.arg}={get_func_name(func)}",
+                )
+            ]
 
 
 @register(ast.Call)

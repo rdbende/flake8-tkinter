@@ -72,8 +72,8 @@ def generate_ancestry(tree: ast.AST) -> None:
             child.parent = node
 
 
-def is_tkinter_namespace(thing: str) -> bool:
-    return thing in {State.tkinter_as, State.ttk_as}
+def is_from_tkinter(node: ast.AST) -> bool:
+    return isinstance(node, ast.Name) and node.id in {State.tkinter_as, State.ttk_as}
 
 
 def is_functools_partial(node: ast.Call) -> bool:
@@ -87,17 +87,6 @@ def is_functools_partial(node: ast.Call) -> bool:
         }
 
     return False
-
-
-def get_func_name(node: ast.Call) -> str:
-    func = node.func
-    if isinstance(func, ast.Name):
-        return func.id
-    elif isinstance(func, ast.Attribute):
-        return f"{func.value.id}.{func.attr}"
-    elif isinstance(func, ast.Lambda):
-        return "<lambda>"
-    return "<function>"
 
 
 def is_attr_call(node: ast.AST) -> bool:
@@ -117,6 +106,15 @@ def is_if_name_equals_main(node: ast.If) -> bool:
         and node.test.comparators[0].value == "__main__"
     )
 
+def get_func_name(node: ast.Call) -> str:
+    func = node.func
+    if isinstance(func, ast.Name):
+        return func.id
+    elif isinstance(func, ast.Attribute):
+        return f"{func.value.id}.{func.attr}"
+    elif isinstance(func, ast.Lambda):
+        return "<lambda>"
+    return "<function>"
 
 def get_ancestors(node: ast.AST) -> list[type[ast.AST]]:
     result = []
