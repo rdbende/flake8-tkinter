@@ -3,10 +3,12 @@ from __future__ import annotations
 import ast
 
 from flake8_tkinter.constants import GM_METHODS
-from flake8_tkinter.utils import is_attr_call, is_tkinter_namespace
 from flake8_tkinter.messages import Error
+from flake8_tkinter.utils import is_attr_call, is_tkinter_namespace
+from flake8_tkinter.visitor import register
 
 
+@register(ast.Assign)
 def detect_assign_to_gm_return(node: ast.Assign) -> list[Error] | None:
     for element in node.value.elts if isinstance(node.value, ast.Tuple) else [node.value]:
         if (

@@ -7,6 +7,7 @@ from dataclasses import dataclass
 @dataclass
 class _State:
     mainloop_already_called: bool = False
+    wait_visibility_already_called: bool = False
     tkinter_used: bool = False
     tkinter_as: str = ""
     ttk_as: str = ""
@@ -47,7 +48,7 @@ def get_func_name(node: ast.Call) -> str:
     return "<function>"
 
 
-def is_attr_call(node: ast.stmt) -> bool:
+def is_attr_call(node: ast.AST) -> bool:
     return isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)
 
 
@@ -65,7 +66,7 @@ def is_if_name_equals_main(node: ast.If) -> bool:
     )  # doesn't check the '==', but it's good enough
 
 
-def get_ancestors(node: ast.stmt) -> list[type[ast.stmt]]:
+def get_ancestors(node: ast.AST) -> list[type[ast.AST]]:
     result = []
     while True:
         if isinstance(node, ast.Module):

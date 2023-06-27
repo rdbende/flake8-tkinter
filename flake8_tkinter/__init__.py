@@ -4,6 +4,7 @@ import ast
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
+from flake8_tkinter import rules
 from flake8_tkinter.visitor import Visitor
 
 if TYPE_CHECKING:
