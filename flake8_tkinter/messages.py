@@ -1,4 +1,5 @@
 messages = {
+    101: "Using multiple `tkinter.Tk` instances. Child windows must be created from `tkinter.Toplevel`.",
     102: "Calling mainloop multiple times. Calling it once is enough.",
     111: "Calling `{handler}()` instead of passing the reference to `{argument}`. Perhaps you meant `{meant}` (without the parentheses)?",
     112: "Calling `{handler}()` with arguments instead of referencing it for `{argument}`. Use a lambda or functools.partial to pass arguments to the handler.",

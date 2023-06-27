@@ -3,6 +3,6 @@ def test_multiple_mainloop_calls(lint):
     assert lint(code) == {"4:1 TK102 Calling mainloop multiple times. Calling it once is enough."}
 
 
-def test_second_mainloop_call_inside_if_name_equals_main(lint):
+def test_second_mainloop_call_is_inside_name_equals_main(lint):
     code = "import tkinter;w.mainloop()\nif __name__ == '__main__':w.mainloop()"
     assert not lint(code)

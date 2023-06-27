@@ -54,6 +54,7 @@ def register(ast_node_type: T, important: bool = False) -> Callable[[T], list[Er
 class _State:
     mainloop_already_called: bool = False
     wait_visibility_already_called: bool = False
+    root_window_already_exists: bool = False
     tkinter_used: bool = False
     tkinter_as: str = ""
     ttk_as: str = ""
