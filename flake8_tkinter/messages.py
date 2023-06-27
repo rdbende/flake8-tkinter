@@ -5,6 +5,7 @@ messages = {
     131: "Do not assign `.{func}()` to a variable. Since `{func}` has no return value, the variable will be None, not the widget object itself.",
     141: "Using {bind_method} without `add=True` will overwrite any existing bindings to this sequence on this widget. Either overwrite them explicitly with `add=False` or use `add=True` to keep existing bindings.",
     142: "Creating bindings in a loop can lead to memory leaks. Store the returned command names in a list to clean them up later.",
+    191: "`.wait_visibility()` must be called before setting window transparency on Linux.",
     201: "Using `from tkinter import *` is a bad practice. Use `import tkinter as tk` or simply `import tkinter` instead.",
     202: "Using `from tkinter.ttk import *` is a bad practice. Use `from tkinter import ttk` instead.",
     211: "Using `import tkinter.ttk as ttk` is pointless. Use `from tkinter import ttk` instead.",
@@ -16,7 +17,7 @@ messages = {
 
 
 class Error:
-    def __init__(self, id: int, line: int, col: int, **kwargs):
+    def __init__(self, id: int, line: int, col: int, **kwargs) -> None:
         self.line = line
         self.col = col
         self.msg = f"TK{id} {messages[id].format(**kwargs)}"

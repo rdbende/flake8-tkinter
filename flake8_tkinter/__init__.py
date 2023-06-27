@@ -4,7 +4,8 @@ import ast
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
-from flake8_tkinter.visitor import Visitor
+from flake8_tkinter import rules
+from flake8_tkinter.api import State, Visitor, generate_ancestry
 
 if TYPE_CHECKING:
     from collections.abc import Generator
@@ -21,12 +22,8 @@ class Plugin:
     tree: ast.AST
 
     def run(self) -> Generator[tuple[int, int, str, None], None, None]:
+        generate_ancestry(self.tree)
         visitor = Visitor()
-
-        for node in ast.walk(self.tree):
-            for child in ast.iter_child_nodes(node):
-                child.parent = node
-
         visitor.visit(self.tree)
 
         for error in visitor.errors:

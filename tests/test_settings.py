@@ -1,5 +1,6 @@
 from base import lint
-from flake8_tkinter.utils import State
+
+from flake8_tkinter.api import State
 
 
 def test_import_tkinter():

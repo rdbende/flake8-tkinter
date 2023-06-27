@@ -1,7 +1,9 @@
-from base import lint
 import tkinter.constants as cst
-from flake8_tkinter.rules.ast_attribute import TKINTER_CONSTANTS
+
+from base import lint
+
 from flake8_tkinter.constants import DUMB_CONSTANTS
+from flake8_tkinter.rules.attributes import TKINTER_CONSTANTS
 
 
 def test_use_of_tkinter_constant():
